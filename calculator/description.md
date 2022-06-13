@@ -4,11 +4,11 @@
  => a+bi
 
 ## Состав команды
-- Team lead: Антон (консультирование, сборка, тестирование). (https://github.com/Evercrow)
-- Обработка полных дробей, дизайн UI: Татьяна  (https://github.com/TatyanaNikonova)
-- Модуль работы с мнимыми единицами:  Сергей  (https://github.com/Serega1067)
-- Логгер,сортировка мнимой части: Евгений  (алгоритм, код). https://github.com/FocusNK
-- Модуль вычисления, работа с библиотекой Fractions: Геннадий  (алгоритм, код) (https://github.com/GennadiyBt)
+- Team lead: *Антон* (консультирование, сборка, тестирование). (https://github.com/Evercrow)
+- Обработка полных дробей, дизайн UI: *Татьяна*  (https://github.com/TatyanaNikonova)
+- Модуль работы с мнимыми единицами:  *Сергей*  (https://github.com/Serega1067)
+- Логгер,сортировка мнимой части: *Евгений*  (алгоритм, код). https://github.com/FocusNK
+- Модуль вычисления, работа с библиотекой Fractions: *Геннадий*  (алгоритм, код) (https://github.com/GennadiyBt)
 
 Общий репозиторий проекта: https://github.com/Evercrow/Study_Projects_Echo/tree/main/calculator
 
