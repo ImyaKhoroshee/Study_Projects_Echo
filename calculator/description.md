@@ -3,11 +3,11 @@
 Пример работы:  5_1/4*6+3i+1/i-63-3/70:5/6+4_1/23+10i*2/3i+10_1/2i*2i => a+bi
 
 ## Состав команды
-- Team lead: Антон (консультирование, сборка, тестирование). (https://github.com/Evercrow)
-- Обработка полных дробей, дизайн UI: Татьяна  (https://github.com/TatyanaNikonova)
-- Модуль работы с мнимыми единицами:  Сергей  (https://github.com/Serega1067)
-- Логгер,сортировка мнимой части: Евгений  (алгоритм, код). https://github.com/FocusNK
-- Модуль вычисления, работа с библиотекой Fractions: Геннадий  (алгоритм, код) (https://github.com/GennadiyBt)
+- Team lead: *Антон* (консультирование, сборка, тестирование). (https://github.com/Evercrow)
+- Обработка полных дробей, дизайн UI: *Татьяна*  (https://github.com/TatyanaNikonova)
+- Модуль работы с мнимыми единицами:  *Сергей*  (https://github.com/Serega1067)
+- Логгер,сортировка мнимой части: *Евгений*  (алгоритм, код). https://github.com/FocusNK
+- Модуль вычисления, работа с библиотекой Fractions: *Геннадий*  (алгоритм, код) (https://github.com/GennadiyBt)
 
 Общий репозиторий проекта: https://github.com/Evercrow/Study_Projects_Echo/tree/main/calculator
 
