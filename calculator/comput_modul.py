@@ -15,7 +15,7 @@ def format_in_fract_list(string_arg):       #функция конвертаци
     return list_arg
     
 def calc_mod(string_arg):
-    import format_in_fract_list
+    import format_in_fract_list from comput_modul
     list_arg = format_in_fract_list(string_arg)
     prom_result_list = []
     i = 0
