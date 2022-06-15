@@ -1,3 +1,6 @@
+from fractions import Fraction
+
+
 def format_in_fract_list(string_arg):       #функция конвертация строки в сипсок
     from fractions import Fraction          #из чисел в формате Fraction и знаков в формате строки
     list_arg = []                           
@@ -14,8 +17,8 @@ def format_in_fract_list(string_arg):       #функция конвертаци
     list_arg.pop()
     return list_arg
     
-def calc_mod(string_arg):
-    from comput_modul import format_in_fract_list 
+
+def calc_mod(string_arg): 
     list_arg = format_in_fract_list(string_arg)
     set = {'+', '-', '*', ':', ' '}
     prom_result_list = []
@@ -39,6 +42,4 @@ def calc_mod(string_arg):
         elif prom_result_list[i] == '-':
             result -= prom_result_list[i+1]
     return result
-
-
 
