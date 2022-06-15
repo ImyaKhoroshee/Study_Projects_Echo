@@ -20,7 +20,7 @@ def conversion_to_mixed_fraction(fraction):
     result = "".join(map(str,list))
     return result
 
-fraction_of_Gena = Fraction(23, 5)
+# fraction_of_Gena = Fraction(23, 5)
 # fraction_of_Gena = Fraction(231, 46)  # => 5_1/46
 
-print(conversion_to_mixed_fraction(fraction_of_Gena))
+# print(conversion_to_mixed_fraction(fraction_of_Gena))
