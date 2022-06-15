@@ -40,5 +40,5 @@ def calc_mod(string_arg):
             result -= prom_result_list[i+1]
     return result
 
-print(calc_mod('5+5'))
+
 
