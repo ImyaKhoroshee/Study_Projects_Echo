@@ -10,15 +10,17 @@ def RC_calculator():
     while True:
         equation = userTerminal()
         print(equation)
-        equation = MixFractionIn(equation)
-        print(equation)
+        # equation = MixFractionIn(equation)
+        # print(equation)
         equation = calc_mod(equation)
         print(equation) 
-        print(MixFractionOut(equation))
-        print(equation)
+        equation = print(MixFractionOut(equation))
         print(colorama.Fore.MAGENTA,f'Ответ:\n {equation}')
-        end_check = bool(input(colorama.Fore.GREEN,"Чтобы продолжить, введите что-нибудь, или по кнопке Enter завершите работу"))
+        print(colorama.Fore.GREEN)
+        end_check = bool(input("Чтобы продолжить, введите что-нибудь, или по кнопке Enter завершите работу \n"))
         if end_check == False: break
+        print(colorama.Style.RESET_ALL)
+
 
 
 
