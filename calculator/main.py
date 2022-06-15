@@ -7,14 +7,18 @@ def RC_calculator():
     from comput_modul import calc_mod
     from return_conversion import conversion_to_mixed_fraction as MixFractionOut
     Intro_block()
-    equation = userTerminal()
-    # print(equation)
-    equation = MixFractionIn(equation)
-    # print(equation)
-    equation = calc_mod(equation)
-    # print(equation) 
-    print(MixFractionOut(equation))
-    # print(equation)
+    while True:
+        equation = userTerminal()
+        print(equation)
+        equation = MixFractionIn(equation)
+        print(equation)
+        equation = calc_mod(equation)
+        print(equation) 
+        print(MixFractionOut(equation))
+        print(equation)
+        print(colorama.Fore.MAGENTA,f'Ответ:\n {equation}')
+        end_check = bool(input(colorama.Fore.GREEN,"Чтобы продолжить, введите что-нибудь, или по кнопке Enter завершите работу"))
+        if end_check == False: break
 
 
 
