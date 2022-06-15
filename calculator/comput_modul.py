@@ -17,6 +17,7 @@ def format_in_fract_list(string_arg):       #функция конвертаци
 def calc_mod(string_arg):
     from comput_modul import format_in_fract_list 
     list_arg = format_in_fract_list(string_arg)
+    set = {'+', '-', '*', ':', ' '}
     prom_result_list = []
     i = 0
     while i < len(list_arg)-1:
@@ -29,6 +30,8 @@ def calc_mod(string_arg):
         else:
             prom_result_list.append(list_arg[i])
             i +=1
+    if list_arg[len(list_arg)-1] not in set:
+        prom_result_list.append(list_arg[len(list_arg)-1])
     result = prom_result_list[0]
     for i in range(1, len(prom_result_list)-1):
         if prom_result_list[i] == '+':
@@ -36,4 +39,6 @@ def calc_mod(string_arg):
         elif prom_result_list[i] == '-':
             result -= prom_result_list[i+1]
     return result
+
+print(calc_mod('5+5'))
 
