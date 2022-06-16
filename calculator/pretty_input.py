@@ -45,8 +45,8 @@ def pretty_input():
     table2.add_row(["log","√ ,sqrt",'1/(3+5), (2+3)*2'])
     print(table2)
     print(cs.Fore.GREEN)
-    print("Для завершения работы введите пустую строку(просто Enter при пустом вводе) \n")
-    print(cs.Style.RESET_ALL, end ="\n")
+    print("Для завершения работы введите пустую строку(просто Enter при пустом вводе)")
+    cs.Style.RESET_ALL
 
 
 # pretty_input()

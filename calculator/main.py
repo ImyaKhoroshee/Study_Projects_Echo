@@ -9,10 +9,10 @@ def RC_calculator():
     Intro_block()
     while True:
         equation = userTerminal()
-        if bool(equation) == False: break
+        if equation == False :break
         print(equation)
-        # equation = MixFractionIn(equation)
-        # print(equation)
+        equation = MixFractionIn(equation)
+        print(equation)
         equation = calc_mod(equation)
         print(equation) 
         equation = MixFractionOut(equation)

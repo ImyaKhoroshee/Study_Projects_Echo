@@ -5,6 +5,7 @@ def userTerminal():
     while True:
         print(cs.Fore.GREEN)
         user_req = input('Введите ОДНОЙ СТРОКОЙ выражение, значение которого нужно найти, и нажмите клавишу "ввод":\n')
+        if bool(user_req) == False: return False
         user_req = user_req.replace(' ','')
         user_req = user_req.replace('--','+')
         user_req = user_req.replace('+-','-')
