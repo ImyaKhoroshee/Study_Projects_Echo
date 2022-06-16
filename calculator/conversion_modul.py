@@ -34,13 +34,3 @@ def conversion_of_mixed_fractions(string_exp):
 
     string_conversed_franctions = "".join(map(str,conversed_fract_list))
     return string_conversed_franctions
-
-<<<<<<< HEAD
-
-# numeric_expression = '5_1/46+3i+1/i-63-3/70:5/6+4_1/23+10i2/3i+10_1/2i*2i'
-=======
-# numeric_expression = '5_1/46+3i+1/i-63-3/70:5/6+4_1/23+10i*2/3i+10_1/2i*2i+5_1/4+5_1/67'
-# numeric_expression = '5_1/4+5_1/67'
->>>>>>> $Tanin_mod
-# print(f'Оригинал: {numeric_expression}')
-# print(f'Результат: {conversion_of_mixed_fractions(numeric_expression)}')
