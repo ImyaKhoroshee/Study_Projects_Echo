@@ -1,3 +1,6 @@
+from fractions import Fraction
+
+
 def format_in_fract_list(string_arg):       #функция конвертация строки в сипсок
     from fractions import Fraction          #из чисел в формате Fraction и знаков в формате строки
     list_arg = []                           
@@ -18,6 +21,10 @@ def format_in_fract_list(string_arg):       #функция конвертаци
     list_arg.pop()
     return list_arg
     
+<<<<<<< HEAD
+=======
+
+>>>>>>> b30470db52977649c53948c04756cacf92d6c249
 def calc_mod(string_arg): 
     list_arg = format_in_fract_list(string_arg)
     set = {'+', '-'}
@@ -48,8 +55,11 @@ def calc_mod(string_arg):
             result -= list_arg[i+1]
     return result
 
+<<<<<<< HEAD
 print(calc_mod('-2/5*4/5:32*1/10'))    
 
 
 
 
+=======
+>>>>>>> b30470db52977649c53948c04756cacf92d6c249
