@@ -33,3 +33,7 @@ def test8_InputValidity():
     """Проверка неправильной записи полной дроби без дробной части  `InputValidity` функции"""
     output = InputValidity('3/70:5/6+4_1/23+10_')
     assert output == False
+def test9_InputValidity():
+    """Проверка отрицательной степени  `InputValidity` функции"""
+    output = InputValidity('4^-2')
+    assert output == True
