@@ -4,7 +4,11 @@ def format_in_fract_list(string_arg):       #функция конвертаци
     result = ''
     string_arg += ' '
     set = {'+', '-', '*', ':', ' '}
-    for i in string_arg:
+    list_string = list(string_arg)
+    if list_string[0] == '-':
+        list_string[1] = '-' + list_string[1]
+        list_string = list_string[1:]
+    for i in list_string:
         if i not in set:
             result += i
         else:
@@ -14,31 +18,38 @@ def format_in_fract_list(string_arg):       #функция конвертаци
     list_arg.pop()
     return list_arg
     
-def calc_mod(string_arg):
-    from comput_modul import format_in_fract_list 
+def calc_mod(string_arg): 
     list_arg = format_in_fract_list(string_arg)
-    set = {'+', '-', '*', ':', ' '}
+    set = {'+', '-'}
     prom_result_list = []
-    i = 0
+    i = 1
     while i < len(list_arg)-1:
-        if list_arg[i+1] == ':':
-            prom_result_list.append(list_arg[i]/list_arg[i+2])
-            i +=3
-        elif list_arg[i+1] == '*':
-            prom_result_list.append(list_arg[i]*list_arg[i+2])
-            i +=3
+        if list_arg[i] == '*':
+            prom_result_list.append(list_arg[i-1]*list_arg[i+1])
+            list_arg = prom_result_list + list_arg[i+2:]
+            prom_result_list = []
+            i= 1
+        elif list_arg[i] == ':':
+            prom_result_list.append(list_arg[i-1]/list_arg[i+1])
+            list_arg = prom_result_list + list_arg[i+2:]
+            prom_result_list = []
+            i = 1
         else:
-            prom_result_list.append(list_arg[i])
-            i +=1
-    if list_arg[len(list_arg)-1] not in set:
-        prom_result_list.append(list_arg[len(list_arg)-1])
-    result = prom_result_list[0]
-    for i in range(1, len(prom_result_list)-1):
-        if prom_result_list[i] == '+':
-            result += prom_result_list[i+1]
-        elif prom_result_list[i] == '-':
-            result -= prom_result_list[i+1]
+            prom_result_list.append(list_arg[i-1])
+            i+=1
+    if len(list_arg) == 1:
+        result = list_arg[0]
+        return result
+    result = list_arg[0]
+    for i in range(1, len(list_arg)-1):
+        if list_arg[i] == '+':
+            result += list_arg[i+1]
+        elif list_arg[i] == '-':
+            result -= list_arg[i+1]
     return result
+
+print(calc_mod('-2/5*4/5:32*1/10'))    
+
 
 
 
