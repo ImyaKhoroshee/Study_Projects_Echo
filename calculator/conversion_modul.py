@@ -1,6 +1,7 @@
 # Модуль преобразования целой части дроби. 
 # Данный код не походит для последней дроби в нашем примере.
 
+
 def conversion_of_mixed_fractions(string_exp):
     result = ''
     list = []
@@ -31,6 +32,6 @@ def conversion_of_mixed_fractions(string_exp):
     return string_conversed_franctions
 
 
-numeric_expression = '5_1/46+3i+1/i-63-3/70:5/6+4_1/23+10i2/3i+10_1/2i*2i'
-print(f'Оригинал: {numeric_expression}')
-print(f'Результат: {conversion_of_mixed_fractions(numeric_expression)}')
+# numeric_expression = '5_1/46+3i+1/i-63-3/70:5/6+4_1/23+10i2/3i+10_1/2i*2i'
+# print(f'Оригинал: {numeric_expression}')
+# print(f'Результат: {conversion_of_mixed_fractions(numeric_expression)}')
