@@ -9,16 +9,14 @@ def RC_calculator():
     Intro_block()
     while True:
         equation = userTerminal()
+        if bool(equation) == False: break
         print(equation)
         # equation = MixFractionIn(equation)
         # print(equation)
         equation = calc_mod(equation)
         print(equation) 
-        equation = print(MixFractionOut(equation))
+        equation = MixFractionOut(equation)
         print(colorama.Fore.MAGENTA,f'Ответ:\n {equation}')
-        print(colorama.Fore.GREEN)
-        end_check = bool(input("Чтобы продолжить, введите что-нибудь, или по кнопке Enter завершите работу \n"))
-        if end_check == False: break
         print(colorama.Style.RESET_ALL)
 
 
