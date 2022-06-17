@@ -2,51 +2,15 @@
 Нужно убрать мнимые единици учитывая степени
 '''
 
-# f = "-3+i+5-2i"
+# f = "-3+i+5-2i^3"
 f = "3*i+1:i+10*i*2:3*i+21/2*i*2*i"
+# return "23", ""
 
-def math_calc(arg1, char, arg2):
-    '''
-    Если число содержит "i", то оно делится на число
-    перед "i" само "i" и степень и после этого
-    производится вычисление
-    '''
-    list_arg1 = ["", "", ""]
-    list_arg2 = ["", "", ""]
-    # if "i" in arg1: arg1, arg2 = arg2, arg1
-    for j in range(3):
-        if "i" in arg1[0].isdigit():
-            if arg1[0].isdigit():
-                list_arg1[0] = int(arg1[:arg1.count("i")])
-            else:
-                list_arg1[0] = 1
-        else:
-            list_arg1[0] = arg1
-        if arg2[0].isdigit():
-            list_arg2[0] = int(arg2[:arg2.count("i")])
-        else:
-            list_arg2[0] = 1
-        if "i" in arg1:
-            list_arg1[1] = "i"
-            if "^" in arg1:
-                list_arg1[2] = arg1[arg1.count("^")+1:]
-        if "i" in arg2:
-            list_arg2[1] = "i"
-            if "^" in arg2:
-                list_arg2[2] = arg2[arg2.count("^")+1:]
-    if char == ":" and arg2 == "i":
-        result = "-" + arg1 + arg2
-        return result
-    if char == "*":
-        num = 1
-        if "i" in arg1:
-            for c in (arg1, arg2):
-                if c[0].isdigit():
-                    num *= int(c[:c.count("i")])
-                else:
-                    num *= 1
-        result = str(num) + "i"
-        return result
+def math_calc(arg):
+    for c in arg:
+        if "*" in c or ":" in c:
+            decomposition_formula(c)
+    # return real_number, imaginary_number
 
 def preparation_formula_separation(arg_f):
     '''
@@ -71,41 +35,24 @@ def formula_split(arg_f):
     print(new_arg_f)
     return new_arg_f
 
-def sorting_math_operations(arg_f):
-    '''
-    Каждый элемент списка arg_f при необходимости делится на мелкие
-    мат. уравнения и находится результат решения
-    '''
+def decomposition_formula(arg):
+    stack_char = []
+    stack_num = []
     num = ""
-    result = []
-    temp_result = []
-    for c in arg_f:
-        if "*" in c or ":" in c:
-            for i in range(len(c)):
-                if c[i] in "*:":
-                    temp_result.append(num)
-                    if len(temp_result) == 3:
-                        print(temp_result)
-                        temp_result[0] = (math_calc(
-                                              temp_result[0], 
-                                              temp_result[1], 
-                                              temp_result[2]))
-                        temp_result = temp_result[0]
-                    temp_result.append(c[i])
-                    num = ""
-                else:
-                    num += c[i]
-            temp_result.append(num)
+    for i in range(len(arg)):
+        if arg[i] == "*" or arg[i] == ":":
+            stack_num.append(num)
             num = ""
-            print(temp_result)
-            result.append(math_calc(temp_result[0], 
-                                    temp_result[1], 
-                                    temp_result[2]))
+            stack_char.append(arg[i])
         else:
-            result.append(c)
-    print(result)
+            num += arg[i]
+            print(num)
+    stack_num.append(num)
+    num = ""
+    print(stack_num, stack_char)
+    return stack_num, stack_char
 
 f1 = preparation_formula_separation(f)
 f2 = formula_split(f1)
-f3 = sorting_math_operations(f2)
-# math_calc(f2)
+# f3 = sorting_math_operations(f2)
+math_calc(f2)
