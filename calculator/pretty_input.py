@@ -5,11 +5,11 @@ def pretty_input():
     import colorama as cs  # pip install colorama
     cs.init()
     print()
-    print(cs.Fore.BLACK + '                    КАЛЬКУЛЯТОР')
-    print(cs.Fore.BLACK + '  для работы с рациональными и комплексными числами \n')
+    print(cs.Fore.BLACK + '                                 КАЛЬКУЛЯТОР')
+    print(cs.Fore.BLACK + '             для работы с рациональными и комплексными числами \n')
     print(cs.Style.BRIGHT, end='')
-    print(cs.Fore.RED + '              Инструкция пользователя\n')
-    print(cs.Fore.BLUE + ' Арифметические действия и простые дроби обозначаются:')
+    print(cs.Fore.RED + '                            Инструкция пользователя\n')
+    print(cs.Fore.BLUE + '          Арифметические действия и простые дроби обозначаются:')
     print(cs.Style.BRIGHT, end='')
 
     name = ['Сложение','Вычитание','Умножение','Деление','Дробь','Возведение в степень']
@@ -38,14 +38,14 @@ def pretty_input():
         data1_data1 = data1_data1[columns1:]
 
     print(cs.Fore.BLUE,table1, end='\n')
-
-    print(cs.Fore.RED + '     Нереализованные(пока?) операции в калькуляторе\n')
+    print()
+    print(cs.Fore.RED + '  Нереализованные(пока?) операции в калькуляторе')
     name2 = ['Логарифмы','Корень из числа','Раскрытие скобок']
     table2 = PrettyTable(name2)
     table2.add_row(["log","√ ,sqrt",'1/(3+5), (2+3)*2'])
     print(table2)
     print(cs.Fore.GREEN)
-    print("Для завершения работы введите пустую строку(просто Enter при пустом вводе)")
+    print("Для завершения работы введите пустую строку (просто Enter при пустом вводе)\n")
     cs.Style.RESET_ALL
 
 

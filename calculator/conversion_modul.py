@@ -1,7 +1,6 @@
 # Fixed (16.06.2022)
 # Модуль преобразования целой части дроби. 
 
-
 def conversion_of_mixed_fractions(string_exp):
     result = ''
     intermediatelist = []
