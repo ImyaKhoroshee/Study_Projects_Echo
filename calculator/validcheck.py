@@ -32,7 +32,7 @@ def InputValidity(user_req :str):
         if user_req[i]  not in validset:
             print(cs.Fore.RED,f"Вы ввели невалидный символ ' {user_req[i]} ' на {i+1}-м месте, исправьте ввод")
             return False
-        if user_req[i] == user_req[i-1] and user_req[i] in {'*',':','+','-','/','^'}:
+        if user_req[i-1] in {'*',':','/','^','+'} and user_req[i] in {'*',':','/','^','+'}:
             print(cs.Fore.RED,f"У вас двойной символ матоперации -  на {i+1}-м месте  , уточните ввод")
             return False
         # if user_req[i] == 'i' and (user_req[i-1].isdigit()): #для варианта когда везде *i

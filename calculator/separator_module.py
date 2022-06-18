@@ -62,5 +62,4 @@ listRes2 = ''.join(listRes2)
 
 clean_equation.append(listRes) #сводим результат в финальный список
 clean_equation.append(listRes2)
-
-print('вывод: мнимая часть [0]:', clean_equation[0], 'вещественная [1]:', clean_equation[1])
+#return listRes,listRes2
