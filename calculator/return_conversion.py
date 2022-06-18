@@ -10,13 +10,13 @@ def conversion_to_mixed_fraction(fraction):
     
     fract_list.append(numerator)
     fract_list.append(denominator)
-    print(fract_list)
+    # print(fract_list)
 
     return_in_list = []
     result = ''
 
     if fract_list[0] % fract_list[1] == 0:    
-        result = fract_list[0]
+        result = str(fract_list[0])
     elif fract_list[0] > fract_list[1] and fract_list[1] != 1: 
         wholepart = (numerator//denominator)            
         return_in_list.append(wholepart)
