@@ -9,7 +9,12 @@
 # f = "2:3i"
 # f = "2i:3i"
 # f = "2i:3"
-f = "3/8:2/3i"
+# f = "3/8:2/3i"
+# f = "3/4i:7/8"
+# f = "1/2i:5/6i"
+# f = "1/2:2/3"
+# f = "4:2"
+f = "1:2"
 # return "23", ""
 
 def clear_num_i(arg):
@@ -40,6 +45,9 @@ def math_div_int(arg1, arg2):
     return result
 
 def math_div_ord_fract(arg1, arg2):
+    """
+    Функция делит обыкновенные дроби
+    """
     if "/" in arg1:
         ord_fract1 = list(map(int, arg1.split("/")))
     else:
@@ -65,12 +73,17 @@ def math_div(arg_num1, arg_num2):
             result = math_div_ord_fract(num1, num2)
         elif "i" in arg_num1 and "i" not in arg_num2:
             num1, num_i = clear_num_i(arg_num1)
-            num1 = num1
+            num2 = arg_num2
             result = math_div_ord_fract(num1, num2) + num_i
         elif "i" not in arg_num1 and "i" in arg_num2:
             num1 = arg_num1
             num2, num_i = clear_num_i(arg_num2)
             result = "-" + math_div_ord_fract(num1, num2) + num_i
+        else:
+            num1 = arg_num1
+            num2 = arg_num2
+            result = math_div_ord_fract(num1, num2)
+
     else:
         if "i" in arg_num1 and "i" in arg_num2:
             num1 = int(clear_num_i(arg_num1)[0])
@@ -86,6 +99,10 @@ def math_div(arg_num1, arg_num2):
             num2, num_i = clear_num_i(arg_num2)
             num2 = int(num2)
             result = "-" + math_div_int(num1, num2) + num_i
+        else:
+            num1 = int(arg_num1)
+            num2 = int(arg_num2)
+            result = math_div_int(num1, num2)
     return result
 
 def math_calc(arg):
@@ -128,6 +145,10 @@ def formula_split(arg_f):
     return new_arg_f
 
 def decomposition_formula(arg):
+    """
+    Функция разбивает каждую формулу на два стека с счислами
+    и знаками мат. операций
+    """
     stack_char = []
     stack_num = []
     num = ""
