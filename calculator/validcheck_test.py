@@ -1,6 +1,7 @@
 
 #вручную вызываем в консоли по python -m pytest validcheck_test.py
 from validcheck import InputValidity
+import pytest
 def test1_InputValidity():
     """Проверка разрешенных символов `InputValidity` функции"""
     output = InputValidity('01_2/3+4*5-6:7i+8^9')
@@ -37,3 +38,14 @@ def test9_InputValidity():
     """Проверка отрицательной степени  `InputValidity` функции"""
     output = InputValidity('4^-2')
     assert output == True
+
+@pytest.mark.parametrize(
+"input_powers,pow_expected",
+    [('4^*2', False),
+    ('4^+2', False),
+    ('4^:2',False),
+    ('4^-2',True),
+    ('4^2',True)])
+def test_Powers_InputValidity(input_powers,pow_expected):
+    """Проверка записи степеней в `InputValidity` функции"""
+    assert InputValidity(input_powers)== pow_expected
