@@ -1,9 +1,12 @@
+from time import time
 from prettytable import PrettyTable  # pip install PrettyTable        
 import colorama as cs # pip install colorama
+from progress.bar import Bar
+import time
 
 def userTerminal():
     while True:
-        print(cs.Fore.GREEN)
+        print(cs.Fore.BLUE)
         user_req = input('Введите ОДНОЙ СТРОКОЙ выражение, значение которого нужно найти, и нажмите клавишу "ввод":\n')
         if bool(user_req) == False: return False
         user_req = user_req.replace(' ','')
@@ -14,7 +17,12 @@ def userTerminal():
         user_req = user_req.replace('ii','i*i')
         if InputValidity(user_req) == True: break
     if user_req[0] == '+': user_req = user_req[1:]
-    print(cs.Fore.GREEN, "Принято, вычисляю...")
+    print(cs.Fore.BLUE)
+    bar = Bar('Принято, вычисляю', max = 100)
+    for i in range(100):
+        time.sleep(0.01)
+        bar.next()
+    bar.finish()
     print(cs.Fore.RESET  ,end='')
 
     return user_req
