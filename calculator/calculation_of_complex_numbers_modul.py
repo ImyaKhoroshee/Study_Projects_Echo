@@ -2,7 +2,9 @@
 Нужно убрать мнимые единици учитывая степени
 '''
 
-# f = "-3+i+5-2i^3"
+import fractions
+
+# f = "-3+i+5-2i"
 f = "3*i+1:i+10*i*2:3*i+21/2*i*2*i"
 # f = "1:1i:1i"
 # f = "8:2i:1i"
@@ -36,11 +38,10 @@ def clear_num_i(arg):
     else:
         return arg[:arg.find("i")], "i"
 
-def math_num_i(arg: int):
-    if arg > 1:
-        pass
-
 def reduction_fractions(arg):
+    """
+    Функция сокращает дроби
+    """
     num_list = list(map(int, arg.split("/")))
     if num_list[0] == num_list[1]: return 1
     elif num_list[1] == 1: return num_list[0]
@@ -199,6 +200,39 @@ def math_mult(arg_num1, arg_num2):
             result = str(num1 * num2)
     return result
 
+def adding_numbers(arg_list):
+    """
+    Функция складывает элементы списка
+    """
+    result_num = 0
+    result_num_i = 0
+    num_list_i = []
+    num_list = []
+    for i in range(len(arg_list)):
+        if "i" in arg_list[i]:
+            num_list_i.append(arg_list[i])
+        else:
+            num_list.append(arg_list[i])
+    for c in num_list:
+        if "/" not in c:
+            f_num = fractions.Fraction(int(c), 1)
+        else:
+            num1, num2 = list(map(int, c.split("/")))
+            f_num = fractions.Fraction(num1, num2)
+        result_num += f_num
+    if len(num_list_i) > 1:
+        for char in num_list_i:
+            if char == "i": char = "1i"
+            if char == "-i": char = "-1i"
+            if "/" not in char:
+                f_num = fractions.Fraction(int(char[:char.find("i")]), 1)
+            else:
+                num1, num2 = list(map(int, char.find("i").split("/")))
+                f_num = fractions.Fraction(num1, num2)
+            result_num_i += f_num
+        if result_num_i == 1 or result_num_i == -1: result_num_i = ""
+    return str(result_num), str(result_num_i) + "i"
+
 def math_calc(arg):
     """
     Функция перебирает список из мат. формул и отправляет их
@@ -208,7 +242,6 @@ def math_calc(arg):
     for c in arg:
         if "*" in c or ":" in c:
             stack_num, stack_char = decomposition_formula(c)
-            print(stack_num, stack_char)
             for i in range(len(stack_char)):
                 if stack_char[i] == ":":
                     temp_result = math_div(stack_num[i], stack_num[i+1])
@@ -216,16 +249,20 @@ def math_calc(arg):
                 elif stack_char[i] == "*":
                     temp_result = math_mult(stack_num[i], stack_num[i+1])
                     stack_num[i+1] = temp_result
-            print(stack_num[-1])
             result_list.append(stack_num[-1])
         else:
             result_list.append(c)
-    print(result_list)
-    if "/" in result_list:
-        for c in result_list:
-            if "/" in c:
-                pass
-    # return real_number, imaginary_number
+    """
+    Складываем все элементы результирующего списка
+    """
+    if len(result_list) < 2:
+        if result_list[0][-1] == "i":
+            return None, result_list[0]
+        else:
+            return result_list[0], None
+    else:
+        result_num, result_num_i = adding_numbers(result_list)
+        return result_num, result_num_i
 
 def preparation_formula_separation(arg_f):
     '''
@@ -239,7 +276,6 @@ def preparation_formula_separation(arg_f):
         if arg_f[i] == "*" and arg_f[i + 1] == "i":
             continue
         new_arg_f += arg_f[i]
-    print(new_arg_f)
     return new_arg_f
 
 def formula_split(arg_f):
@@ -247,7 +283,6 @@ def formula_split(arg_f):
     Делаем из строки список разделяя его по знаку "+"
     '''
     new_arg_f = arg_f.split("+")
-    print(new_arg_f)
     return new_arg_f
 
 def decomposition_formula(arg):
@@ -269,7 +304,12 @@ def decomposition_formula(arg):
     num = ""
     return stack_num, stack_char
 
-f1 = preparation_formula_separation(f)
-f2 = formula_split(f1)
-# f3 = sorting_math_operations(f2)
-math_calc(f2)
+def main_calc_i():
+    f1 = preparation_formula_separation(f)
+    f2 = formula_split(f1)
+    # f3 = sorting_math_operations(f2)
+    num, num_i = math_calc(f2)
+    print(num, num_i)
+    return num, num_i
+
+main_calc_i()
