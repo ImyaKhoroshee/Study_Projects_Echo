@@ -3,6 +3,10 @@
 import re
 
 string_input = '-+4i+32*3' #переменная для ввода уравнения.
+string_input1 = '-4/34i+i:3i+5*3-56i+56/23*7^2-5^3i+32*3'
+string_input2 = '4i*56+56-31i*4-56'
+string_input3 = '4i*4:5+4:4*5+4*4i:5+642-3i:56+4+i'
+string_input4 = '4/5*3*2i+45+3*4/5i*2-2-3*4/5:2i'
 
 listRes = []
 listRes2 = []
@@ -10,9 +14,8 @@ clean_equation = []
 token_start = [ '+', '^', '*','/',':']
 token_end = ['-', '+', '^', '*','/',':']
 
-string_input_clear = string_input.replace('++','+').replace('--','-').replace('+-','-').replace('-+','-')
 
-sort = re.findall(r'\D\d+[/]+\d+\Di|\D\d+\Di|\D\d+i|\d+|\D', string_input_clear)
+sort = re.findall(r'\D\d+[/]+\d+\Di|\D\d+\Di|\D\d+i|\d+|\D', string_input4)
 # расшифровка шаблона регулярных отбора строки, по степени важности.
 # \D\d+[/]+\d+\Di - знак, числа, знак деления(/), числа, знак, символ "i" (+21/2*i)
 # \D\d+\Di - знак ,числа, знак, символ "i" (+2*i)
@@ -62,4 +65,5 @@ listRes2 = ''.join(listRes2)
 
 clean_equation.append(listRes) #сводим результат в финальный список
 clean_equation.append(listRes2)
+print(clean_equation)
 #return listRes,listRes2
