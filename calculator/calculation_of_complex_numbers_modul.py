@@ -40,6 +40,22 @@ def math_num_i(arg: int):
     if arg > 1:
         pass
 
+def reduction_fractions(arg):
+    num_list = list(map(int, arg.split("/")))
+    if num_list[0] == num_list[1]: return 1
+    elif num_list[1] == 1: return num_list[0]
+    num1 = max(num_list)
+    num2 = min(num_list)
+    while num1 != 0 and num2 != 0:
+        temp = num2
+        num2 = num1 % num2
+        num1 = temp
+    num_list[0] = num_list[0] // num1
+    num_list[1] = num_list[1] // num1
+    if num_list[1] == 1: return str(num_list[0])
+    else:
+        return "/".join(map(str, num_list))
+
 def math_div_int(arg1, arg2):
     """
     Функция делит два числа полученных из функции math_div()
@@ -50,6 +66,7 @@ def math_div_int(arg1, arg2):
         result = str(arg1 // arg2)
     else:
         result = str(arg1) + "/" + str(arg2)
+        result = reduction_fractions(result)
     return result
 
 def math_div_ord_fract(arg1, arg2):
@@ -66,7 +83,11 @@ def math_div_ord_fract(arg1, arg2):
         ord_fract2 = list(int(arg2), 1)
     numerator = ord_fract1[0] * ord_fract2[1]
     denominator = ord_fract1[1] * ord_fract2[0]
-    result = str(numerator) + "/" + str(denominator)
+    if denominator == 1:
+        result = str(numerator)
+    else:
+        result = str(numerator) + "/" + str(denominator)
+        result = reduction_fractions(result)
     return result
 
 def math_div(arg_num1, arg_num2):
@@ -132,6 +153,7 @@ def math_mult_ord_fract(arg1, arg2):
     numerator = ord_fract1[0] * ord_fract2[0]
     denominator = ord_fract1[1] * ord_fract2[1]
     result = str(numerator) + "/" + str(denominator)
+    result = reduction_fractions(result)
     return result
 
 def math_mult(arg_num1, arg_num2):
@@ -199,6 +221,10 @@ def math_calc(arg):
         else:
             result_list.append(c)
     print(result_list)
+    if "/" in result_list:
+        for c in result_list:
+            if "/" in c:
+                pass
     # return real_number, imaginary_number
 
 def preparation_formula_separation(arg_f):
