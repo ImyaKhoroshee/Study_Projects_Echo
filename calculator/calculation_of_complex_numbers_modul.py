@@ -3,7 +3,7 @@
 '''
 
 # f = "-3+i+5-2i^3"
-# f = "3*i+1:i+10*i*2:3*i+21/2*i*2*i"
+f = "3*i+1:i+10*i*2:3*i+21/2*i*2*i"
 # f = "1:1i:1i"
 # f = "8:2i:1i"
 # f = "2:3i"
@@ -14,7 +14,15 @@
 # f = "1/2i:5/6i"
 # f = "1/2:2/3"
 # f = "4:2"
-f = "1:2"
+# f = "1:2"
+# f = "2*8"
+# f = "3*4*9"
+# f = "3i*4i*9i"
+# f = "3i*4*9i"
+# f = "3*4i*9i"
+# f = "3*4*9i"
+# f = "3*4i*9"
+# f = "3i*4*9"
 # return "23", ""
 
 def clear_num_i(arg):
@@ -26,7 +34,7 @@ def clear_num_i(arg):
     elif arg[0] == "-" and arg[1] == "i":
         return "-1", "i"
     else:
-        return arg[:-1], "i"
+        return arg[:arg.find("i")], "i"
 
 def math_num_i(arg: int):
     if arg > 1:
@@ -55,7 +63,7 @@ def math_div_ord_fract(arg1, arg2):
     if "/" in arg2:
         ord_fract2 = list(map(int, arg2.split("/")))
     else:
-        ord_fract2 = list(arg2, 1)
+        ord_fract2 = list(int(arg2), 1)
     numerator = ord_fract1[0] * ord_fract2[1]
     denominator = ord_fract1[1] * ord_fract2[0]
     result = str(numerator) + "/" + str(denominator)
@@ -105,11 +113,76 @@ def math_div(arg_num1, arg_num2):
             result = math_div_int(num1, num2)
     return result
 
+def math_mult_ord_fract(arg1, arg2):
+    """
+    Функция перемножает обыкновенные дроби
+    """
+    ord_fract1 = []
+    ord_fract2 = []
+    if "/" in arg1:
+        ord_fract1 = list(map(int, arg1.split("/")))
+    else:
+        ord_fract1.append(int(arg1))
+        ord_fract1.append(1)
+    if "/" in arg2:
+        ord_fract2 = list(map(int, arg2.split("/")))
+    else:
+        ord_fract2.append(int(arg2))
+        ord_fract2.append(1)
+    numerator = ord_fract1[0] * ord_fract2[0]
+    denominator = ord_fract1[1] * ord_fract2[1]
+    result = str(numerator) + "/" + str(denominator)
+    return result
+
+def math_mult(arg_num1, arg_num2):
+    """
+    Функция перемножает натуральные дроби и целые числа
+    """
+    if "/" in arg_num1 or "/" in arg_num2:
+        if "i" in arg_num1 and "i" in arg_num2:
+            num1 = clear_num_i(arg_num1)[0]
+            num2 = clear_num_i(arg_num2)[0]
+            result = math_mult_ord_fract(num1, num2)
+        elif "i" in arg_num1 and "i" not in arg_num2:
+            num1, num_i = clear_num_i(arg_num1)
+            num2 = arg_num2
+            result = math_mult_ord_fract(num1, num2) + num_i
+        elif "i" not in arg_num1 and "i" in arg_num2:
+            num1 = arg_num1
+            num2, num_i = clear_num_i(arg_num2)
+            result = math_mult_ord_fract(num1, num2) + num_i
+        else:
+            num1 = arg_num1
+            num2 = arg_num2
+            result = math_mult_ord_fract(num1, num2)
+
+    else:
+        if "i" in arg_num1 and "i" in arg_num2:
+            num1 = int(clear_num_i(arg_num1)[0])
+            num2 = int(clear_num_i(arg_num2)[0])
+            result = str(num1 * num2 * -1)
+        elif "i" in arg_num1 and "i" not in arg_num2:
+            num1, num_i = clear_num_i(arg_num1)
+            num1 = int(num1)
+            num2 = int(arg_num2)
+            result = str(num1 * num2) + num_i
+        elif "i" not in arg_num1 and "i" in arg_num2:
+            num1 = int(arg_num1)
+            num2, num_i = clear_num_i(arg_num2)
+            num2 = int(num2)
+            result = str(num1 * num2) + num_i
+        else:
+            num1 = int(arg_num1)
+            num2 = int(arg_num2)
+            result = str(num1 * num2)
+    return result
+
 def math_calc(arg):
     """
     Функция перебирает список из мат. формул и отправляет их
     в разные функции соответствующие нужной мат. операции
     """
+    result_list = []
     for c in arg:
         if "*" in c or ":" in c:
             stack_num, stack_char = decomposition_formula(c)
@@ -118,7 +191,14 @@ def math_calc(arg):
                 if stack_char[i] == ":":
                     temp_result = math_div(stack_num[i], stack_num[i+1])
                     stack_num[i+1] = temp_result
-            print(stack_num)
+                elif stack_char[i] == "*":
+                    temp_result = math_mult(stack_num[i], stack_num[i+1])
+                    stack_num[i+1] = temp_result
+            print(stack_num[-1])
+            result_list.append(stack_num[-1])
+        else:
+            result_list.append(c)
+    print(result_list)
     # return real_number, imaginary_number
 
 def preparation_formula_separation(arg_f):
@@ -138,7 +218,7 @@ def preparation_formula_separation(arg_f):
 
 def formula_split(arg_f):
     '''
-    Делаем из строки список разделяя его по знеку "+"
+    Делаем из строки список разделяя его по знаку "+"
     '''
     new_arg_f = arg_f.split("+")
     print(new_arg_f)
