@@ -73,4 +73,3 @@ def calc_mod(string_arg):
             result -= list_arg[i+1]
     return result
 
-#print(calc_mod('2*4^1/2'))

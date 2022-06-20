@@ -27,7 +27,7 @@ def pretty_input():
     print()
 
     name1 = ['Пример записи дроби с целой частью','Пример записи мнимой части','Пример степени']
-    data1 = ['4_1/47','1_2/3:i, 1_2/3i , 1:i, 1:4i*i','степень пишется одним целым числом: 5i^2*3 !=5i^6, =15i^2']
+    data1 = ['4_1/47','1_2/3:i, 1_2/3i , 1:i, 1:4i*i','Степень пишется одним целым числом: 5i^2*3 !=5i^6, =15i^2']
 
     columns1 = len(name1)  
     table1 = PrettyTable(name1)  
@@ -39,7 +39,7 @@ def pretty_input():
 
     print(cs.Fore.BLUE,table1, end='\n')
     print()
-    print(cs.Fore.RED + '  Нереализованные(пока?) операции в калькуляторе')
+    print(cs.Fore.RED + '                       Нереализованные(пока?) операции в калькуляторе')
     name2 = ['Логарифмы','Корень из числа','Раскрытие скобок','Возведение в степень(в процессе доработки)']
     table2 = PrettyTable(name2)
     table2.add_row(["log","√ ,sqrt",'1/(3+5), (2+3)*2','^'])
@@ -49,7 +49,7 @@ def pretty_input():
     cs.Style.RESET_ALL
 
 
-# pretty_input()
+pretty_input()
 
 # cs.Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
 # Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
