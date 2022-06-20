@@ -32,13 +32,14 @@ def format_in_fract_list(string_arg):       #функция конвертаци
     return list_arg
     
 def calc_mod(string_arg): 
+    from fractions import Fraction
     list_arg = format_in_fract_list(string_arg)
     set = {'+', '-'}
     prom_result_list = []
     i = 1
     while i < len(list_arg)-1:
         if list_arg[i] == '^':
-            prom_result_list.append(list_arg[i-1]**list_arg[i+1])
+            prom_result_list.append(Fraction(list_arg[i-1]**list_arg[i+1]))
             list_arg = prom_result_list + list_arg[i+2:]
             prom_result_list = []
             i= 1
@@ -72,4 +73,4 @@ def calc_mod(string_arg):
             result -= list_arg[i+1]
     return result
 
-#print(calc_mod('2*4^-2-2*3^-2'))
+#print(calc_mod('2*4^1/2'))
