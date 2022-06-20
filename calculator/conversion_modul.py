@@ -5,7 +5,7 @@ def conversion_of_mixed_fractions(string_exp):
     result = ''
     intermediatelist = []
 
-    set = {'+', '-', '*', ':', 'i', '_', '/'}
+    set = {'+', '-', '*', ':', 'i', '_', '/'}# 4_1/2
 
     for i in range (0, len(string_exp)):
         if string_exp[i] not in set:

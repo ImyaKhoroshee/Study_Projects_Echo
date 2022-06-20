@@ -1,4 +1,3 @@
-from prettytable import PrettyTable  # pip install PrettyTable        
 import colorama as cs # pip install colorama
 
 def userTerminal():
@@ -27,7 +26,7 @@ def InputValidity(user_req :str):
     if user_req[0] not in {'0','1','2','3','4','5','6','7','8','9','+','-','i'}:
         print(cs.Fore.RED,f"Первый символ невалидный - ' {user_req[0]} ' , исправьте ввод")
         return False
-    
+
     for i in range(1,len(user_req)-1):
         if user_req[i]  not in validset:
             print(cs.Fore.RED,f"Вы ввели невалидный символ ' {user_req[i]} ' на {i+1}-м месте, исправьте ввод")
@@ -65,10 +64,8 @@ def InputValidity(user_req :str):
     if user_req[-1] in {'*',':','+','-','/','_','^'}:
         print(cs.Fore.RED,f"Матоперация ' {user_req[-1]} ' на конце пустая  , уточните ввод")
         return False
-                
+
     return True
 
 
 # print(userTerminal())
-
-
