@@ -6,15 +6,20 @@ def RC_calculator():
     from conversion_modul import conversion_of_mixed_fractions as MixFractionIn
     from comput_modul import calc_mod
     from return_conversion import conversion_to_mixed_fraction as MixFractionOut
+    from complex_with_str import Complex_i_logic
+    import separator_module
     Intro_block()
     while True:
         equation = userTerminal()
         if equation == False :break
-        print(equation)
+        # print(equation)
+
         equation = MixFractionIn(equation)
-        print(equation)
+        # print(equation)
+
         equation = calc_mod(equation)
-        print(equation) 
+        # print(equation)
+ 
         equation = MixFractionOut(equation)
         print(colorama.Fore.MAGENTA,f'Ответ:\n {equation}')
         print(colorama.Style.RESET_ALL)
