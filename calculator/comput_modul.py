@@ -1,13 +1,26 @@
-def format_in_fract_list(string_arg):       #функция конвертация строки в сипсок
-    from fractions import Fraction          #из чисел в формате Fraction и знаков в формате строки
-    list_arg = []                           
-    result = ''
+def negative_value(string_arg):
     string_arg += ' '
     set = {'+', '-', '*', ':', '^',  ' '}
     list_string = list(string_arg)
     if list_string[0] == '-':
         list_string[1] = '-' + list_string[1]
         list_string = list_string[1:]
+    long = len(list_string)
+    i = 1
+    while i < long:
+        if list_string[i] == '-' and list_string[i-1] in set:
+            list_string[i+1] = '-' + list_string[i+1]
+            list_string.pop(i)
+            long -=1
+        i +=1    
+    return list_string
+
+def format_in_fract_list(string_arg):       #функция конвертация строки в сипсок
+    from fractions import Fraction          #из чисел в формате Fraction и знаков в формате строки
+    list_arg = []                           
+    result = ''
+    list_string = negative_value(string_arg)
+    set = {'+', '-', '*', ':', '^',  ' '}
     for i in list_string:
         if i not in set:
             result += i
@@ -53,5 +66,5 @@ def calc_mod(string_arg):
             result -= list_arg[i+1]
     return result
 
-#print(calc_mod('-2/5*4/5:32*1/10'))   
-print(calc_mod('-2^3^3')) 
+print(calc_mod('-2/5*4/5:32*1/10-1'))   
+#print(calc_mod('-2^-3*2-1')) 
