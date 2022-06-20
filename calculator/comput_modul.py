@@ -72,4 +72,5 @@ def calc_mod(string_arg):
             result -= list_arg[i+1]
     return result
 
-#print(calc_mod('2*4^-2-2*3^-2'))
+#print(calc_mod('-2/5*4/5:32*1/10-1'))   
+#print(calc_mod('-2^-3*2-1'))
