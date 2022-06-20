@@ -42,7 +42,13 @@ def calc_mod(string_arg):
             list_arg = prom_result_list + list_arg[i+2:]
             prom_result_list = []
             i= 1
-        elif list_arg[i] == '*':
+        else:
+            prom_result_list.append(list_arg[i-1])
+            i+=1
+    prom_result_list = []
+    i = 1
+    while i < len(list_arg)-1:
+        if list_arg[i] == '*':
             prom_result_list.append(list_arg[i-1]*list_arg[i+1])
             list_arg = prom_result_list + list_arg[i+2:]
             prom_result_list = []
@@ -67,4 +73,4 @@ def calc_mod(string_arg):
     return result
 
 #print(calc_mod('-2/5*4/5:32*1/10-1'))   
-#print(calc_mod('-2^-3*2-1')) 
+#print(calc_mod('-2^-3*2-1'))
