@@ -9,14 +9,19 @@
 
 # Ссылка на чат с нашим ботом t.me/Our_Calculator_Bot. 
 
+from encodings import utf_8
 import telegram
 from telegram.ext import Updater, CommandHandler # обработчик CommandHandler (фильтрует сообщения с командами)
 from telegram.ext import MessageHandler, Filters # чтобы отвечать на все команды, которые не были распознаны предыдущими обработчиками.
 # from CallbackContext import telegram
 from conversion_modul import conversion_of_mixed_fractions
 # import conversion_modul
-
-TOKEN = '5464910335:AAEHCTH4POKyCAZVhjKbKySCSVY5-4--Jg8'
+f = open("calculator\config.txt", 'r', encoding='utf_8')
+all_config = f.read()
+sep_configs =  all_config.split('\n', 1)
+f.close()
+# print(sep_configs[1])
+TOKEN = sep_configs[1]
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 
