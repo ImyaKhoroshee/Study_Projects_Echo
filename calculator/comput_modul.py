@@ -1,4 +1,4 @@
-def negative_value(string_arg):
+def negative_value(string_arg):             #Модуль обработки отрицательных значений
     string_arg += ' '
     set = {'+', '-', '*', ':', '^',  ' '}
     list_string = list(string_arg)
@@ -66,5 +66,5 @@ def calc_mod(string_arg):
             result -= list_arg[i+1]
     return result
 
-print(calc_mod('-2/5*4/5:32*1/10-1'))   
+#print(calc_mod('-2/5*4/5:32*1/10-1'))   
 #print(calc_mod('-2^-3*2-1')) 
