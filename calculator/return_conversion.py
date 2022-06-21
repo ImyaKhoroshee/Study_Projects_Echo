@@ -1,6 +1,9 @@
 from fractions import Fraction
 
 def conversion_to_mixed_fraction(fraction):
+    
+    if fraction == '': 
+        return fraction
 
     fract_list = []
     
@@ -58,5 +61,5 @@ def conversion_to_mixed_fraction(fraction):
 
 # fraction_of_Gena = Fraction(-2, 7)    #  -2/7 Когда числ < знам и деление нацело равно 0 и первый эл меньше второго
 # fraction_of_Gena = Fraction(2, -7)      # -2/7    просто сразу в резалт c минусом
-
+# fraction_of_Gena = ''
 # print(conversion_to_mixed_fraction(fraction_of_Gena))
