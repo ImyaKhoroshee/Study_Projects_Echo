@@ -107,7 +107,7 @@ def Complex_i_logic(inp_str:str):
 # part3 = '1/2i*2i^-5+4i-5i+4*-5i-4:-5i'
 # part4 = '4i*4:5+4:4*5+4*4i:5+642-3i:56+4+i'
 # # print(part3)
-# print(Complex_i_logic(part4))
+# print(Complex_i_logic(''))
 
 
 
