@@ -20,7 +20,7 @@ from return_conversion import conversion_to_mixed_fraction
 
 from fractions import Fraction
 
-f = open('calculator\config.txt', 'r', encoding='utf_8')   # Путь для Тани :)
+f = open('config.txt', 'r', encoding='utf_8')   # Путь для Тани :)
 token_calc = f.read()
 print(token_calc)
 # sep_configs =  all_config.split('\n', 1)
@@ -41,8 +41,7 @@ def start(update, context):     # Приветствие
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Посчитать тебе пример?")
 # Введи команду /calc, нажми пробел и введи свой пример.
-start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
-dispatcher.add_handler(start_handler)    
+  
 
 def mixed_fractions_conversion(update, context): # привязала бота к модулю преобразования целой части дроби. 
     # print(type(update.message.text))              4_5/6+2i-6_2/7  => 29/6+2i-44/7
@@ -50,9 +49,7 @@ def mixed_fractions_conversion(update, context): # привязала бота �
     blabla = update.message.text[11:]
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=conversion_of_mixed_fractions(blabla))
-
-start_handler = CommandHandler('frommixed', mixed_fractions_conversion) # если увидишь команду `/frommixed`, то вызови функцию `mixed_fractions_conversion()`
-dispatcher.add_handler(start_handler)    
+   
 
 def conversion_to_mixed_fractions(update, context): # привязала бота к модулю обратного преобразования дроби
     # print(type(update.message.text))                  /tomixed 29/6 => 4_5/6
@@ -71,7 +68,9 @@ def input_tele_check(update, context):
     checked_input = tele_check(user_text)
     if checked_input == 0:
         context.bot.send_message(chat_id=user_text.effective_chat.id, 
-                             text="Вы хотите посчитать это выражение(да/нет)?")
+                             text="Вы хотите посчитать это выражение?")
+        # yes = KeyboardButton('Да,хочу', )
+        # yes =
     else:
         context.bot.send_message(chat_id=user_text.effective_chat.id, 
                              text=f"{checked_input[1]}, код ошибки {checked_input[0]}")
@@ -99,6 +98,15 @@ def run_main(update,context):
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=f'Ответ:\n {answer}')
 
+def start_test(update, _):
+    keyboard = [
+        [
+            InlineKeyboardButton("Option 1", callback_data='1'),
+            InlineKeyboardButton("Option 2", callback_data='2'),
+        ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('Пожалуйста, выберите:', reply_markup=reply_markup)
+
 
 def commands_list(update,context):
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -107,6 +115,11 @@ def commands_list(update,context):
     " "
     "/{1} - blabla ".format('frommixed','tomixed')))
 
+start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
+dispatcher.add_handler(start_handler)  
+
+start_handler = CommandHandler('frommixed', mixed_fractions_conversion) # если увидишь команду `/frommixed`, то вызови функцию `mixed_fractions_conversion()`
+dispatcher.add_handler(start_handler) 
 
 start_handler = CommandHandler('help', commands_list) # если увидишь команду `/frommixed`, то вызови функцию `mixed_fractions_conversion()`
 dispatcher.add_handler(start_handler)
@@ -118,7 +131,9 @@ start_handler = CommandHandler('checkme', input_tele_check) # если увид�
 dispatcher.add_handler(start_handler)   
 
 start_handler = CommandHandler('tomixed', conversion_to_mixed_fractions) # если увидишь команду `/tomixed`, то вызови функцию `conversion_to_mixed_fractions()`
-dispatcher.add_handler(start_handler)    
+dispatcher.add_handler(start_handler) 
+start_handler = CommandHandler('keys', start_test)
+dispatcher.add_handler(start_handler)   
 
 print('server is working')
 
