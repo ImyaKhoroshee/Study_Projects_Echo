@@ -17,14 +17,17 @@ from telegram.ext import MessageHandler, Filters # чтобы отвечать �
 # from CallbackContext import telegram
 from conversion_modul import conversion_of_mixed_fractions
 from return_conversion import conversion_to_mixed_fraction
+
 from fractions import Fraction
 
-f = open('.telegram\config.txt', 'r', encoding='utf_8')   # Путь для Тани :)
-all_config = f.read()
-sep_configs =  all_config.split('\n', 1)
+f = open('calculator\config.txt', 'r', encoding='utf_8')   # Путь для Тани :)
+token_calc = f.read()
+print(token_calc)
+# sep_configs =  all_config.split('\n', 1)
+
+# sep_configs[1] = sep_configs[1][:-2]
 f.close()
-# print(sep_configs[1])
-TOKEN = sep_configs[1]
+TOKEN = token_calc
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 
@@ -61,6 +64,58 @@ def conversion_to_mixed_fractions(update, context): # привязала бот�
     ab = Fraction(a, b)
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=conversion_to_mixed_fraction(ab))
+
+def input_tele_check(update, context):
+    from validcheck import InputValidityTelebot as tele_check
+    user_text = update.message.text[9:]
+    checked_input = tele_check(user_text)
+    if checked_input == 0:
+        context.bot.send_message(chat_id=user_text.effective_chat.id, 
+                             text="Вы хотите посчитать это выражение(да/нет)?")
+    else:
+        context.bot.send_message(chat_id=user_text.effective_chat.id, 
+                             text=f"{checked_input[1]}, код ошибки {checked_input[0]}")
+
+def run_main(update,context):
+    from conversion_modul import conversion_of_mixed_fractions as MixFractionIn
+    from comput_modul import calc_mod
+    from return_conversion import conversion_to_mixed_fraction as MixFractionOut
+    from complex_with_str import Complex_i_logic as remove_i
+    from separator_module import separator
+    from calc_logging import read_data_file as write_log
+    start_eq = update.message.text[6:]
+    equation = MixFractionIn(start_eq)
+    equation = separator(equation)
+    image_parts = remove_i(equation[1])
+    result_parts = []
+    result_parts.append(equation[0]+image_parts[0])
+    result_parts.append(image_parts[1])
+    result_parts = list(map(calc_mod,result_parts))
+    result_parts = list(map(MixFractionOut,result_parts))
+    if result_parts[1] != '':
+        result_parts[1] ='+'+result_parts[1]+'i'
+    answer = result_parts[0]+result_parts[1]
+    write_log(start_eq,answer)
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text=f'Ответ:\n {answer}')
+
+
+def commands_list(update,context):
+    context.bot.send_message(chat_id=update.effective_chat.id,
+    text = ("/{0} - команда перевода смешанной дроби в неправильную \n "
+    " "
+    " "
+    "/{1} - blabla ".format('frommixed','tomixed')))
+
+
+start_handler = CommandHandler('help', commands_list) # если увидишь команду `/frommixed`, то вызови функцию `mixed_fractions_conversion()`
+dispatcher.add_handler(start_handler)
+
+start_handler = CommandHandler('calc', run_main) # если увидишь команду `/frommixed`, то вызови функцию `mixed_fractions_conversion()`
+dispatcher.add_handler(start_handler)
+
+start_handler = CommandHandler('checkme', input_tele_check) # если увидишь команду `/frommixed`, то вызови функцию `mixed_fractions_conversion()`
+dispatcher.add_handler(start_handler)   
 
 start_handler = CommandHandler('tomixed', conversion_to_mixed_fractions) # если увидишь команду `/tomixed`, то вызови функцию `conversion_to_mixed_fractions()`
 dispatcher.add_handler(start_handler)    

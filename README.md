@@ -9,11 +9,18 @@
 - возведением в степень(одним целым числом )
 - мнимыми единицами(определяет вещественную и мнимую часть)
 
-## Для работы потребуются  :
+### **Для работы потребуются**  :
 - **Python 3.10** и выше
-- библиотеки c pypi :
-    - **colorama-0.4.5**  *pip install colorama*
-    - **prettytable==3.3.0** *pip install PrettyTable*
+- библиотеки c **pypi** :
+    - **colorama-0.4.5**
+
+        *pip install colorama*
+    - **prettytable==3.3.0** 
+
+        *pip install PrettyTable*
+    - **python-telegram-bot==13.12**
+
+        *python -m pip install -U python-telegram-bot*
 - для работы автоматических тестов используется **pytest**
 
 ToDo: telegram-бот и команды для работы с модулями калькулятора.
