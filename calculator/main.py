@@ -35,8 +35,9 @@ def RC_calculator():
 
         result_parts = list(map(MixFractionOut,result_parts))
         # print(f'after MixFractionOut {result_parts}')
-
-        answer = result_parts[0]+'+'+result_parts[1]+'i'
+        if result_parts[1] != '':
+            result_parts[1] ='+'+result_parts[1]+'i'
+        answer = result_parts[0]+result_parts[1]
         write_log(start_eq,answer)
         print(colorama.Fore.MAGENTA,f'Ответ:\n {answer}')
         print(colorama.Style.RESET_ALL)
