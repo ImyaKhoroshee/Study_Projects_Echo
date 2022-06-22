@@ -8,15 +8,18 @@
 # (TelegramBot):~$ python -m pip install -U python-telegram-bot
 
 # Ссылка на чат с нашим ботом t.me/Our_Calculator_Bot. 
-
 from encodings import utf_8
 import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update # https://docs-python.ru/packages/biblioteka-python-telegram-bot-python/menju-klaviatury/
+# кнопки хочу еще добавить
 from telegram.ext import Updater, CommandHandler # обработчик CommandHandler (фильтрует сообщения с командами)
 from telegram.ext import MessageHandler, Filters # чтобы отвечать на все команды, которые не были распознаны предыдущими обработчиками.
 # from CallbackContext import telegram
 from conversion_modul import conversion_of_mixed_fractions
-# import conversion_modul
-f = open("calculator\config.txt", 'r', encoding='utf_8')
+from return_conversion import conversion_to_mixed_fraction
+from fractions import Fraction
+
+f = open('.telegram\config.txt', 'r', encoding='utf_8')   # Путь для Тани :)
 all_config = f.read()
 sep_configs =  all_config.split('\n', 1)
 f.close()
@@ -25,35 +28,48 @@ TOKEN = sep_configs[1]
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 
-# def start(update, context):
-#     # print(type(update.message.text))
-#     # print(update.message.text)
-#     context.bot.send_message(chat_id=update.effective_chat.id, 
-#                              text="Привет, посчитать тебе пример?")
-
-# start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
-# dispatcher.add_handler(start_handler)    
-
-def preobraz(update, context):
+def start(update, context):     # Приветствие
     # print(type(update.message.text))
     # print(update.message.text)
-    blabla = update.message.text[5:]
-    print(blabla)
+    # markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    # btn1 = types.KeyboardButton("Да, посчитай}?")
+    # btn2 = types.KeyboardButton("Нет, я сам посчитаю?")
+    # markup.add(btn1, btn2)
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Посчитать тебе пример?")
+# Введи команду /calc, нажми пробел и введи свой пример.
+start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
+dispatcher.add_handler(start_handler)    
+
+def mixed_fractions_conversion(update, context): # привязала бота к модулю преобразования целой части дроби. 
+    # print(type(update.message.text))              4_5/6+2i-6_2/7  => 29/6+2i-44/7
+    # print(update.message.text)
+    blabla = update.message.text[11:]
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=conversion_of_mixed_fractions(blabla))
 
-start_handler = CommandHandler('sum', preobraz) # если увидишь команду `/start`, то вызови функцию `start()`
+start_handler = CommandHandler('frommixed', mixed_fractions_conversion) # если увидишь команду `/frommixed`, то вызови функцию `mixed_fractions_conversion()`
 dispatcher.add_handler(start_handler)    
-print('start server')
+
+def conversion_to_mixed_fractions(update, context): # привязала бота к модулю обратного преобразования дроби
+    # print(type(update.message.text))                  /tomixed 29/6 => 4_5/6
+    # print(update.message.text)
+    user_input = update.message.text[9:]
+    pre_list = user_input.split('/')
+    a = int(pre_list[0])
+    b = int(pre_list[1])
+    ab = Fraction(a, b)
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text=conversion_to_mixed_fraction(ab))
+
+start_handler = CommandHandler('tomixed', conversion_to_mixed_fractions) # если увидишь команду `/tomixed`, то вызови функцию `conversion_to_mixed_fractions()`
+dispatcher.add_handler(start_handler)    
+
+print('server is working')
 
 # import logging      # Журнал
 # logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 #                     level=logging.INFO)
-
-# # функция обработки команды '/start'
-# def start(update, context):
-#     context.bot.send_message(chat_id=update.effective_chat.id, 
-#                              text="Привет, посчитать тебе пример?")
 
 
 # функция обработки текстовых сообщений (функция обратного вызова) ЭХО
@@ -106,7 +122,7 @@ print('start server')
 # unknown_handler = MessageHandler(Filters.command, unknown)
 # dispatcher.add_handler(unknown_handler)
 
-# # запуск прослушивания сообщений
-updater.start_polling()
+# запуск прослушивания сообщений
+updater.start_polling() # наверное это для постоянной работы (none_stop=True)
 # обработчик нажатия Ctrl+C
 updater.idle()
