@@ -86,3 +86,17 @@ def separator (string_conversion):
 # print(separator(string_input1))
 
 
+# init_string = '5+4i+4*-4:4i-34'
+# temp = ''
+# result=[]
+# set_before_minus = {':','*','^'}
+# for i,symb in enumerate(init_string[:-1]):
+    
+#     if symb == "+" or (symb == "-" and init_string[i-1] not in set_before_minus) :
+#         result.append(temp)
+#         #if #in temp есть i  или нет. Через метод find() index()
+#         temp =''
+#     temp += symb
+# temp += init_string[-1]
+# result.append(temp)
+# print(result)
