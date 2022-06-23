@@ -2,18 +2,34 @@
 # python -m pip install -U python-telegram-bot
 # Ссылка на чат с нашим ботом t.me/Our_Calculator_Bot. 
 
-from encodings import utf_8
+import os
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler # обработчик CommandHandler (фильтрует сообщения с командами)
 
-f = open('.telegram\config.txt', 'r', encoding='utf_8')   # Путь для Тани
-# f = open('config.txt', 'r', encoding='utf_8')   # Путь для Антона
-token_calc = f.read()
+# Путь к токену у Тани
+# f = open('.telegram\config.txt', 'r', encoding='utf_8')
+# # f = open('config.txt', 'r', encoding='utf_8')   
+# token_calc = f.read()
+# f.close()
+
+# Путь к токену у Антона
+f = open(os.path.dirname(__file__)+'\config.txt','r',encoding='utf-8')
+all_config = f.read()
 f.close()
+sep_config = all_config.split('\n')
+token_calc = sep_config[1]
+
 TOKEN = token_calc
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
+
+# Включение встроенных логов бота. Потом посылать строки в лог через logger.info()
+# import logging
+# logging.basicConfig(
+#     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+# )
+# logger = logging.getLogger(__name__)
 
 def start(update, context):     # Приветствие
     # print(type(update.message.text))
@@ -34,13 +50,7 @@ def start_test(update: Update, context: CallbackContext):
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Хочешь посчитать?', reply_markup=reply_markup)
 
-def button(update: Update, context: CallbackContext):
-    query = update.callback_query
-    query.answer()
 
-    query.edit_message_text(text=query.data)
-
-updater.dispatcher.add_handler(CallbackQueryHandler(button))
 
 def run_main(update,context):
     from conversion_modul import conversion_of_mixed_fractions as MixFractionIn
@@ -49,7 +59,8 @@ def run_main(update,context):
     from complex_with_str import Complex_i_logic as remove_i
     from separator_module import separator
     from calc_logging import read_data_file as write_log
-    start_eq = update.message.text[6:]
+    if update.message.text[0]== '/': start_eq = update.message.text[6:]
+    else : start_eq = update.message.text
     equation = MixFractionIn(start_eq)
     equation = separator(equation)
     image_parts = remove_i(equation[1])
@@ -62,7 +73,7 @@ def run_main(update,context):
         result_parts[1] ='+'+result_parts[1]+'i'
     answer = result_parts[0]+result_parts[1]
     write_log(start_eq,answer)
-    context.bot.send_message(chat_id=update.effective_chat.id, 
+    context.bot.send_message(chat_id=update.message.chat_id, 
                              text=f'Ответ:\n {answer}')  
 
 def mix_frac_conv(update, context): # для команды /frommix. Пример: 4_5/6+2i-6_2/7  => 29/6+2i-44/7
@@ -85,18 +96,49 @@ def conv_to_mix_frac(update, context): # для команды /tomix. Прим�
                              text=conversion_to_mixed_fraction(ab))
 
 def input_tele_check(update, context):
+    # print(update)
     from validcheck import InputValidityTelebot as tele_check
-    user_text = update.message.text[7:]
+    update.message.text = update.message.text[9:]
+    # print(update)
+    user_text = update.message.text
+    # print(user_text)
     checked_input = tele_check(user_text)
+    
+    choices = [[InlineKeyboardButton("Да", callback_data='c1'+user_text),
+              InlineKeyboardButton("Нет", callback_data='c2'+user_text)]]
+    choices_markup = InlineKeyboardMarkup(choices)
+
     if checked_input == 0:
-        context.bot.send_message(chat_id=user_text.effective_chat.id, 
-                             text="Вы хотите посчитать это выражение?")
-        # yes = KeyboardButton('Да,хочу', )
-        # yes =
+        update.message.reply_text("Вы хотите посчитать это выражение?",reply_markup=choices_markup)
+        # context.bot.editMessageText(chat_id=update.message.chat_id, #такая запись просто автоматом считает, без выбора по кнопке
+        #                         message_id=update.message.message_id, 
+        #                         text=run_main(update,context))
+        # telegram.Bot.answer_callback_query(somequeryname) #чтобы в чате не было 30-сек. ожидания, как файл.close()
     else:
-        context.bot.send_message(chat_id=user_text.effective_chat.id, 
+        context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=f"{checked_input[1]}, код ошибки {checked_input[0]}")
 
+def buttons_list(update: Update, context: CallbackContext):
+    q_update = update.callback_query
+    # print(q_update)
+    
+    query_txt = q_update.data
+    if query_txt[0] == 'c':
+        if query_txt[1] == '1':
+            q_update.message.text = query_txt[2:]
+            # print(q_update)
+            run_main(q_update,context)
+            context.bot.editMessageText(chat_id=q_update.message.chat_id,
+                                message_id=q_update.message.message_id, 
+                                text="Без проблем")
+        elif query_txt[1] == '2':
+            context.bot.editMessageText(chat_id=update.callback_query.message.chat_id,
+                                message_id=update.callback_query.message.message_id, 
+                                text="Понял, дальше вы сами")
+    # query.edit_message_text(text=query.data)
+    update.callback_query.answer()
+
+updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
 
 # def commands_list(update,context):  # Список всех доступных команд  дорабатывает Сергей. 
 #     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -104,6 +146,9 @@ def input_tele_check(update, context):
 #     " "
 #     " "
 #     "/{1} - blabla ".format('frommix','tomix')))
+
+
+
 
 start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
 dispatcher.add_handler(start_handler)  
