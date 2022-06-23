@@ -6,6 +6,7 @@
 
 import datetime, os
 
+
 def read_data_file(arg_formula, arg_solved_formula):
     dt_now_temp = datetime.datetime.now()
     dt_now = "{0}:{1}:{2};дата={3}.{4}.{5}".format(
@@ -16,7 +17,8 @@ def read_data_file(arg_formula, arg_solved_formula):
         dt_now_temp.month,
         dt_now_temp.year
     )
-    data = open(os.path.abspath("./calculator/use_logs.txt"), "a", encoding="utf-8")
+    data = open((os.path.dirname(__file__) + 
+                "\\use_logs.txt"), "a", encoding="utf-8")
     data.seek(0)
     data.write("формула="
                "{0};"
