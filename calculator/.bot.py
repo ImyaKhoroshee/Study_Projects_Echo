@@ -32,23 +32,8 @@ dispatcher = updater.dispatcher
 # logger = logging.getLogger(__name__)
 
 def start(update, context):     # Приветствие
-    # print(type(update.message.text))
-    # print(update.message.text)
-    # markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    # btn1 = types.KeyboardButton("Да, посчитай}?")
-    # btn2 = types.KeyboardButton("Нет, я сам посчитаю?")
-    # markup.add(btn1, btn2)
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Чтобы попробовать, жми /keys")
-
-def start_test(update: Update, context: CallbackContext):
-    keyboard = [
-        [
-            InlineKeyboardButton("Да, хочу", callback_data='Круто'),
-            InlineKeyboardButton("Нет, я сам посчитаю", callback_data='Молодец'),
-        ]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Хочешь посчитать?', reply_markup=reply_markup)
 
 
 
@@ -113,7 +98,6 @@ def input_tele_check(update, context):
         # context.bot.editMessageText(chat_id=update.message.chat_id, #такая запись просто автоматом считает, без выбора по кнопке
         #                         message_id=update.message.message_id, 
         #                         text=run_main(update,context))
-        # telegram.Bot.answer_callback_query(somequeryname) #чтобы в чате не было 30-сек. ожидания, как файл.close()
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=f"{checked_input[1]}, код ошибки {checked_input[0]}")
@@ -121,7 +105,6 @@ def input_tele_check(update, context):
 def buttons_list(update: Update, context: CallbackContext):
     q_update = update.callback_query
     # print(q_update)
-    
     query_txt = q_update.data
     if query_txt[0] == 'c':
         if query_txt[1] == '1':
@@ -135,7 +118,6 @@ def buttons_list(update: Update, context: CallbackContext):
             context.bot.editMessageText(chat_id=update.callback_query.message.chat_id,
                                 message_id=update.callback_query.message.message_id, 
                                 text="Понял, дальше вы сами")
-    # query.edit_message_text(text=query.data)
     update.callback_query.answer()
 
 updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
@@ -168,8 +150,6 @@ dispatcher.add_handler(start_handler)
 start_handler = CommandHandler('tomix', conv_to_mix_frac)
 dispatcher.add_handler(start_handler) 
 
-start_handler = CommandHandler('keys', start_test)
-dispatcher.add_handler(start_handler)   
 
 print('server is working')
 updater.start_polling() # запуск прослушивания сообщений
