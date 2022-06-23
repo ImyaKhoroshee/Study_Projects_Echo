@@ -1,12 +1,19 @@
 
 # На вход получаем от Модуля преобразования полных дробей
 import re
-# string_input = '-1i+2i*3i:4i^5i+23/6i-23/7*i-1+2*3:4^5+23/6'# ['-1i+2i*3i:4i^5i+23/6i-23/7*i', '-1+2*3:4&5+23/6']
-# string_input = '-42/34i:3i+5*3-56/32i+56/23*7^2-5^3i+32*3' # ['-42/34i:3i-56/32i-5^3i', '5*3+56/23*7&2+32*3']
-# string_input = '4i*56+56-31i*4-56' # ['4i-31i', '56+56*4-56']
-# string_input = '4i*4:5+4:4*5+4*4i:5+642-3i:56+4+i' ['4i*4i-3i+i', '4:5+4:4*5+4:5+642:56+4']
-# string_input = '4/5*3*2i+45+3*4/5i*2-2-3*4/5:2i' ['2i*4/5i:2i', '4/5*3+45+3*2-2-3*4/5']
-# string_input = '2^i+3' ['2^i', '3']
+
+# здесь просто на понимание разные многочлены. Членом является часть выражения, отделенная от других членов операцией сложения или вычитания.
+# a+b+c -> ['a+b+c','']
+# a+bi*d-c -> ['a-c','bi*d']
+# a-bi*d+c*ei -> ['a','-bi*d+c*ei']
+# a/bi+c/d-f*g -> [ 'c/d-f*g', 'a/bi']
+#  Проверочные примеры
+# string_input1 = '-1i+2i*3i:4i^5i+23/6i-23/7*i-1+2*3:4^5+23/6'# ['-1+2*3:4^5+23/6','-1i+2i*3i:4i^5i+23/6i-23/7*i' ]
+# string_input2 = '-42/34i:3i+5*3-56/32i+56/23*7^2-5^3i+32*3' # [ '5*3+56/23*7^2+32*3','-42/34i:3i-56/32i-5^3i',]
+# string_input3 = '4i*56+56-31i*4-56' # ['56-56','4i*56-31i*4']
+# string_input4 = '4i*4:5+4:4*5+4*4i:5+642-3i:56+4+i'# ['4:4*5+642+4','4i*4:5+4*4i-3i:56+i']
+# string_input5 = '4/5*3*2i+45+3*4/5i*2-2-3*4/5:2i'# ['45-2','4/5*3*2i+3*4/5i*2-3*4/5:2i']
+
 def separator (string_conversion):    
     listRes = []
     listRes2 = []
@@ -75,7 +82,21 @@ def separator (string_conversion):
     clean_equation.append(listRes)
     return clean_equation   
 
-# string_input = '4i*4:5+4:4*5+4*4i:5+642-3i:56+4+i'
-# print(separator(string_input))
+
+# print(separator(string_input1))
 
 
+# init_string = '5+4i+4*-4:4i-34'
+# temp = ''
+# result=[]
+# set_before_minus = {':','*','^'}
+# for i,symb in enumerate(init_string[:-1]):
+    
+#     if symb == "+" or (symb == "-" and init_string[i-1] not in set_before_minus) :
+#         result.append(temp)
+#         #if #in temp есть i  или нет. Через метод find() index()
+#         temp =''
+#     temp += symb
+# temp += init_string[-1]
+# result.append(temp)
+# print(result)
