@@ -17,7 +17,7 @@ def counting_ipowerdigits(pow_string:str,found_index:int): #подфункция
     else: return int(i_pow_num)
 
 def clean_up_i(init_part:str): #меняем i на 1,если с цифрой - то просто убираем
-    result_part =''
+    result_part =' '
     for letter in init_part:
         if letter == 'i':
             if result_part[-1].isdigit() : 
@@ -25,6 +25,7 @@ def clean_up_i(init_part:str): #меняем i на 1,если с цифрой -
             else: 
                 result_part+='1'
         else: result_part+=letter
+    result_part = result_part.strip()
     # print(result_part)
     return result_part
 
@@ -38,7 +39,7 @@ def split_str_in_list_by_addsub(nonsplit:str): #на выходе объект f
             continue
         split_index +=1
     nonsplit = ''.join(list_for_splits)
-    # print(inp_str)
+    # print(nonsplit)
     splitted = filter(None,nonsplit.split('+'))
     return splitted 
 
@@ -52,7 +53,7 @@ def Complex_i_logic(inp_str:str):
     part_isneg =False
     # print(list(all_parts)) #учитываем, что list() уберет filter пустышек, и дальше будет пусто
     for part in all_parts:
-        print(part)
+        # print(part)
         for j in range(len(part)-1): #проходимся по элементу списка(члену выражения),запоминая последние знаки деления/умножения
             if part[j] =='i':
                 if div_check == True and part[j+1] == '^':
@@ -70,7 +71,7 @@ def Complex_i_logic(inp_str:str):
             if div_check == True :i_pow -=1
             else : i_pow +=1
         
-        print(f"i_pow is {i_pow}")
+        # print(f"i_pow is {i_pow}")
         if part[0] == '-': part_isneg = True #проверяем знак члена
         if i_pow < 0 and part_isneg == True and i_pow%4 !=0: #если оба минус, сокращаем сразу.
             part = part[1:]
@@ -94,18 +95,19 @@ def Complex_i_logic(inp_str:str):
         part_isneg = False
         div_check = False
         i_pow = 0
-    print(real_parts,img_parts)
+    # print(real_parts,img_parts)
     real_parts_str ='+'.join(real_parts)
     real_parts_str = real_parts_str.replace('+-','-')
     img_parts_str = '+'.join(img_parts)
     img_parts_str = img_parts_str.replace('+-','-')
     return real_parts_str,img_parts_str
 
-part1 = '-10i*2:3:2*i^2'
-part2 = '-10i*i:3i-12/3i*i/3+2:2i*i^4'
-part3 = '1/2i*2i^-5+4i-5i+4*-5i-4:-5i'
-print(part3)
-print(Complex_i_logic(part3))
+# part1 = '-10i*2:3:2*i^2'
+# part2 = '-10i*i:3i-12/3i*i/3+2:2i*i^4'
+# part3 = '1/2i*2i^-5+4i-5i+4*-5i-4:-5i'
+# part4 = '4i*4:5+4:4*5+4*4i:5+642-3i:56+4+i'
+# # print(part3)
+# print(Complex_i_logic(''))
 
 
 

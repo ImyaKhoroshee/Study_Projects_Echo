@@ -4,7 +4,8 @@
 указанием времени в момент записи
 '''
 
-import datetime
+import datetime, os
+
 
 def read_data_file(arg_formula, arg_solved_formula):
     dt_now_temp = datetime.datetime.now()
@@ -16,7 +17,8 @@ def read_data_file(arg_formula, arg_solved_formula):
         dt_now_temp.month,
         dt_now_temp.year
     )
-    data = open("use_logs.txt", "a", encoding="utf-8")
+    data = open((os.path.dirname(__file__) + 
+                "\\use_logs.txt"), "a", encoding="utf-8")
     data.seek(0)
     data.write("формула="
                "{0};"

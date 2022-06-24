@@ -102,6 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+.telegram
 .env
 .venv
 env/
@@ -130,3 +131,5 @@ dmypy.json
 
 #private config
 config.txt
+
+use_logs.txt

@@ -1,3 +1,4 @@
+
 def separator(input_string):
     temp = ''
     result=[]
@@ -27,4 +28,4 @@ def separator(input_string):
         clean2 = ''.join([clean2[i] for i in range(len(clean2)) if i != 0]) 
 
     return clean2, clean
-separator(init_string)
+

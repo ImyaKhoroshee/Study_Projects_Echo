@@ -1,112 +1,181 @@
-# По лекции не получилось создать бота, использовала этот сайт https://docs-python.ru/packages/biblioteka-python-telegram-bot-python/
-
-# создаем виртуальное окружение, если нет
-# $ python -m venv .telegram --prompt TelegramBot
-# активируем виртуальное окружение 
-# $ source .telegram/bin/activate
 # ставим модуль python-telegram-bot
-# (TelegramBot):~$ python -m pip install -U python-telegram-bot
-
+# python -m pip install -U python-telegram-bot
 # Ссылка на чат с нашим ботом t.me/Our_Calculator_Bot. 
 
-from encodings import utf_8
+import os
 import telegram
-from telegram.ext import Updater, CommandHandler # обработчик CommandHandler (фильтрует сообщения с командами)
-from telegram.ext import MessageHandler, Filters # чтобы отвечать на все команды, которые не были распознаны предыдущими обработчиками.
-# from CallbackContext import telegram
-from conversion_modul import conversion_of_mixed_fractions
-# import conversion_modul
-f = open("calculator\config.txt", 'r', encoding='utf_8')
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler # обработчик CommandHandler (фильтрует сообщения с командами)
+
+# Путь к токену у Тани
+# f = open('.telegram\config.txt', 'r', encoding='utf_8')
+# # f = open('config.txt', 'r', encoding='utf_8')   
+# token_calc = f.read()
+# f.close()
+
+# Путь к токену у Антона
+f = open(os.path.dirname(__file__)+'\config.txt','r',encoding='utf-8')
 all_config = f.read()
-sep_configs =  all_config.split('\n', 1)
 f.close()
-# print(sep_configs[1])
-TOKEN = sep_configs[1]
+sep_config = all_config.split('\n')
+token_calc = sep_config[1]
+
+TOKEN = token_calc
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 
-# def start(update, context):
-#     # print(type(update.message.text))
-#     # print(update.message.text)
-#     context.bot.send_message(chat_id=update.effective_chat.id, 
-#                              text="Привет, посчитать тебе пример?")
+# Включение встроенных логов бота. Потом посылать строки в лог через logger.info()
+# import logging
+# logging.basicConfig(
+#     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+# )
+# logger = logging.getLogger(__name__)
 
-# start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
-# dispatcher.add_handler(start_handler)    
+def start(update, context):     # Приветствие
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Чтобы попробовать, жми /keys")
 
-def preobraz(update, context):
-    # print(type(update.message.text))
+
+
+def run_main(update,context):
+    from conversion_modul import conversion_of_mixed_fractions as MixFractionIn
+    from comput_modul import calc_mod
+    from return_conversion import conversion_to_mixed_fraction as MixFractionOut
+    from complex_with_str import Complex_i_logic as remove_i
+    from separator_module import separator
+    from calc_logging import read_data_file as write_log
+    if update.message.text[0]== '/': start_eq = update.message.text[6:]
+    else : start_eq = update.message.text
+    equation = MixFractionIn(start_eq)
+    equation = separator(equation)
+    image_parts = remove_i(equation[1])
+    result_parts = []
+    result_parts.append(equation[0]+image_parts[0])
+    result_parts.append(image_parts[1])
+    result_parts = list(map(calc_mod,result_parts))
+    result_parts = list(map(MixFractionOut,result_parts))
+    if result_parts[1] != '':
+        result_parts[1] ='+'+result_parts[1]+'i'
+    answer = result_parts[0]+result_parts[1]
+    write_log(start_eq,answer)
+    context.bot.send_message(chat_id=update.message.chat_id, 
+                             text=f'Ответ:\n {answer}')  
+
+def mix_frac_conv(update, context): # для команды /frommix. Пример: 4_5/6+2i-6_2/7  => 29/6+2i-44/7
+    from conversion_modul import conversion_of_mixed_fractions
+    # print(type(update.message.text))              
     # print(update.message.text)
-    blabla = update.message.text[5:]
-    print(blabla)
+    blabla = update.message.text[9:]
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=conversion_of_mixed_fractions(blabla))
+   
+def conv_to_mix_frac(update, context): # для команды /tomix. Пример: 29/6 => 4_5/6
+    from return_conversion import conversion_to_mixed_fraction
+    from fractions import Fraction
+    user_input = update.message.text[7:]
+    pre_list = user_input.split('/')
+    a = int(pre_list[0])
+    b = int(pre_list[1])
+    ab = Fraction(a, b)
+    context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text=conversion_to_mixed_fraction(ab))
 
-start_handler = CommandHandler('sum', preobraz) # если увидишь команду `/start`, то вызови функцию `start()`
-dispatcher.add_handler(start_handler)    
-print('start server')
+def input_tele_check(update, context):
+    # print(update)
+    from validcheck import InputValidityTelebot as tele_check
+    update.message.text = update.message.text[9:]
+    # print(update)
+    user_text = update.message.text
+    # print(user_text)
+    checked_input = tele_check(user_text)
+    
+    choices = [[InlineKeyboardButton("Да", callback_data='c1'+user_text),
+              InlineKeyboardButton("Нет", callback_data='c2'+user_text)]]
+    choices_markup = InlineKeyboardMarkup(choices)
 
-# import logging      # Журнал
-# logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-#                     level=logging.INFO)
+    if checked_input == 0:
+        update.message.reply_text("Вы хотите посчитать это выражение?",reply_markup=choices_markup)
+        # context.bot.editMessageText(chat_id=update.message.chat_id, #такая запись просто автоматом считает, без выбора по кнопке
+        #                         message_id=update.message.message_id, 
+        #                         text=run_main(update,context))
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text=f"{checked_input[1]}, код ошибки {checked_input[0]}")
 
-# # функция обработки команды '/start'
-# def start(update, context):
-#     context.bot.send_message(chat_id=update.effective_chat.id, 
-#                              text="Привет, посчитать тебе пример?")
+def buttons_list(update: Update, context: CallbackContext):
+    q_update = update.callback_query
+    # print(q_update)
+    query_txt = q_update.data
+    if query_txt[0] == 'c':
+        if query_txt[1] == '1':
+            q_update.message.text = query_txt[2:]
+            # print(q_update)
+            run_main(q_update,context)
+            context.bot.editMessageText(chat_id=q_update.message.chat_id,
+                                message_id=q_update.message.message_id, 
+                                text="Без проблем")
+        elif query_txt[1] == '2':
+            context.bot.editMessageText(chat_id=update.callback_query.message.chat_id,
+                                message_id=update.callback_query.message.message_id, 
+                                text="Понял, дальше вы сами")
+    update.callback_query.answer()
+
+updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
+
+def commands_list(update,context):  # Список всех доступных команд  дорабатывает Сергей. 
+    context.bot.send_message(chat_id=update.effective_chat.id,
+    text = ("Доступные математические символы:\n"
+            "------------------------------------------------------------------------\n"
+            "'+' сложение                        '1+2'\n"
+            "'-' вычитание                       '1-2'\n"
+            "'*' умножение                       '1*2'\n"
+            "':' деление                         '1:2'\n"
+            "'^' возведение в степень            '3^2'\n"
+            "'i' обозначение мнимой части        '3i*2i:i'\n"
+            "------------------------------------------------------------------------\n"
+            "Способы записи обыкновенных дробей:\n"
+            "------------------------------------------------------------------------\n"
+            "правильная дробь            '1/2'\n"
+            "неправильная дробь        '5/3'\n"
+            "смешанная дробь              '2_3/4\n"
+            "------------------------------------------------------------------------\n"
+            "Команды:\n"
+            "------------------------------------------------------------------------\n"
+            "/{0} - команда приветствия калькулятора\n"
+            "/{1} - команда вызова справки\n"
+            "/{2} - команда вычисления выражения '/calc выражение'\n"
+            "/{3} - команда перевода смешанной дроби в неправильную\n"
+            "/{4} - проверка валидности\n"
+            "/{5} - выделение целой части у неправильнай дроби '9/5 = 1_4/5'\n"
+            .format('start', 
+                    'help', 
+                    'calc', 
+                    'frommix', 
+                    'checkme', 
+                    'tomix')))
 
 
-# функция обработки текстовых сообщений (функция обратного вызова) ЭХО
-# def echo(update, context):
-#     text = 'Ты написал: ' + update.message.text 
-#     context.bot.send_message(chat_id=update.effective_chat.id, 
-#                              text=text)    
-
-# # функция обработки команды '/caps'
-# # Команда /caps будет принимать какой-то текст в качестве аргумента и отвечать на него тем же текстом, 
-# # только в верхнем регистре. Аргументы команды (например /caps any args) будут поступать в функцию обратного вызова в 
-# # виде списка ['any', 'args'], разделенного по пробелам:
-# def caps(update, context):
-#     print(type(context))
-#     context.bot.send_message(chat_id=update.effective_chat.id, 
-#                                 text=conversion_of_mixed_fractions(str(context.args)))
-#     # # if context.args:
-#     #     text_caps = conversion_of_mixed_fractions(context.args) # хотела попробовать ввод пользователя в свою функцию пропихнуть. Не вышло
-#     #     # text_caps = ' '.join(context.args).upper()
-#     #     context.bot.send_message(chat_id=update.effective_chat.id, 
-#     #                             text=text_caps)
-#     # else: # если в команде не указан аргумент
-#     #     context.bot.send_message(chat_id=update.effective_chat.id, 
-#     #                             text='Ты не ввел свой пример')
-#     #     context.bot.send_message(chat_id=update.effective_chat.id, 
-#     #                             text='Напиши: /caps и свой пример')
 
 
-# # функция обработки не распознных команд
-# def unknown(update, context):
-#     context.bot.send_message(chat_id=update.effective_chat.id, 
-#                              text="Я не знаю такую команду.")
+start_handler = CommandHandler('start', start) 
+dispatcher.add_handler(start_handler)  
 
-# # обработчик команды '/start'
-# start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
-# dispatcher.add_handler(start_handler)    
+start_handler = CommandHandler('frommix', mix_frac_conv)
+dispatcher.add_handler(start_handler) 
 
-# # обработчик текстовых сообщений
-# # говорим обработчику `MessageHandler`, если увидишь текстовое 
-# # сообщение (фильтр `Filters.text`)  и это будет не команда 
-# # (фильтр ~Filters.command), то вызови функцию `echo()`
-# echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
-# dispatcher.add_handler(echo_handler)
+start_handler = CommandHandler('help', commands_list)
+dispatcher.add_handler(start_handler)
 
-# # обработчик команды '/caps'
-# caps_handler = CommandHandler('caps', caps)
-# dispatcher.add_handler(caps_handler)
+start_handler = CommandHandler('calc', run_main)
+dispatcher.add_handler(start_handler)
 
-# # обработчик не распознных команд
-# unknown_handler = MessageHandler(Filters.command, unknown)
-# dispatcher.add_handler(unknown_handler)
+start_handler = CommandHandler('checkme', input_tele_check)
+dispatcher.add_handler(start_handler)   
 
-# # запуск прослушивания сообщений
-updater.start_polling()
-# обработчик нажатия Ctrl+C
-updater.idle()
+start_handler = CommandHandler('tomix', conv_to_mix_frac)
+dispatcher.add_handler(start_handler) 
+
+
+print('server is working')
+updater.start_polling() # запуск прослушивания сообщений
+updater.idle()          # обработчик нажатия Ctrl+C
