@@ -29,3 +29,28 @@ def separator(input_string):
 
     return clean2, clean
 
+# def separator(input_string):
+#     temp = ''
+#     result=[]
+#     set_before_minus = {':','*','^',''}
+
+#     for i,symb in enumerate(input_string[:-1]):
+#         if symb == "+" or (symb == "-" and input_string[i-1] not in set_before_minus) :
+#             result.append(temp)
+#             temp =''
+#         temp += symb
+#     temp += input_string[-1]
+#     result.append(temp)
+#     # result = list(map(str,result))
+#     print(result)
+#     real = ''
+#     img = ''
+#     for x in result:
+#         if x.find('i') == -1:
+#             real+=x
+#         else:
+#             img+=x
+#     if real[0]=='+': real = real[1:]
+#     if img[0]=='+': img = img[1:]
+#     return real,img
+
