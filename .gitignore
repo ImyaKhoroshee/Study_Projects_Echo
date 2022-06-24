@@ -131,3 +131,5 @@ dmypy.json
 
 #private config
 config.txt
+
+use_logs.txt
