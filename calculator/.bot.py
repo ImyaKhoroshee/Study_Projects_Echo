@@ -120,7 +120,7 @@ def buttons_list(update: Update, context: CallbackContext):
                                 text="Понял, дальше вы сами")
     update.callback_query.answer()
 
-updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
+
 
 # def commands_list(update,context):  # Список всех доступных команд  дорабатывает Сергей. 
 #     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -131,6 +131,7 @@ updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
 
 
 
+updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
 
 start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
 dispatcher.add_handler(start_handler)  
