@@ -122,25 +122,50 @@ def buttons_list(update: Update, context: CallbackContext):
 
 
 
-# def commands_list(update,context):  # Список всех доступных команд  дорабатывает Сергей. 
-#     context.bot.send_message(chat_id=update.effective_chat.id,
-#     text = ("/{0} - команда перевода смешанной дроби в неправильную \n "
-#     " "
-#     " "
-#     "/{1} - blabla ".format('frommix','tomix')))
+def commands_list(update,context):  # Список всех доступных команд  дорабатывает Сергей. 
+    context.bot.send_message(chat_id=update.effective_chat.id,
+    text = ("Доступные математические символы:\n"
+            "------------------------------------------------------------------------\n"
+            "'+' сложение                        '1+2'\n"
+            "'-' вычитание                       '1-2'\n"
+            "'*' умножение                       '1*2'\n"
+            "':' деление                         '1:2'\n"
+            "'^' возведение в степень            '3^2'\n"
+            "'i' обозначение мнимой части        '3i*2i:i'\n"
+            "------------------------------------------------------------------------\n"
+            "Способы записи обыкновенных дробей:\n"
+            "------------------------------------------------------------------------\n"
+            "правильная дробь            '1/2'\n"
+            "неправильная дробь        '5/3'\n"
+            "смешанная дробь              '2_3/4\n"
+            "------------------------------------------------------------------------\n"
+            "Команды:\n"
+            "------------------------------------------------------------------------\n"
+            "/{0} - команда приветствия калькулятора\n"
+            "/{1} - команда вызова справки\n"
+            "/{2} - команда вычисления выражения '/calc выражение'\n"
+            "/{3} - команда перевода смешанной дроби в неправильную\n"
+            "/{4} - проверка валидности\n"
+            "/{5} - выделение целой части у неправильнай дроби '9/5 = 1_4/5'\n"
+            .format('start', 
+                    'help', 
+                    'calc', 
+                    'frommix', 
+                    'checkme', 
+                    'tomix')))
 
 
 
 updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
 
-start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
+start_handler = CommandHandler('start', start) 
 dispatcher.add_handler(start_handler)  
 
 start_handler = CommandHandler('frommix', mix_frac_conv)
 dispatcher.add_handler(start_handler) 
 
-# start_handler = CommandHandler('help', commands_list)
-# dispatcher.add_handler(start_handler)
+start_handler = CommandHandler('help', commands_list)
+dispatcher.add_handler(start_handler)
 
 start_handler = CommandHandler('calc', run_main)
 dispatcher.add_handler(start_handler)
