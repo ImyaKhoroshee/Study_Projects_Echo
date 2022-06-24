@@ -13,7 +13,7 @@ token_calc = f.read()
 f.close()
 TOKEN = token_calc
 updater = Updater(token=TOKEN)
-dp = updater.dispatcher
+dispatcher = updater.dispatcher
 
 
 def start(update, context):     # Приветствие
