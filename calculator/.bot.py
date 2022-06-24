@@ -5,23 +5,18 @@
 from encodings import utf_8
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler # обработчик CommandHandler (фильтрует сообщения с командами)
-
+from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, ConversationHandler
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 f = open('.telegram\config.txt', 'r', encoding='utf_8')   # Путь для Тани
 # f = open('config.txt', 'r', encoding='utf_8')   # Путь для Антона
 token_calc = f.read()
 f.close()
 TOKEN = token_calc
 updater = Updater(token=TOKEN)
-dispatcher = updater.dispatcher
+dp = updater.dispatcher
+
 
 def start(update, context):     # Приветствие
-    # print(type(update.message.text))
-    # print(update.message.text)
-    # markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    # btn1 = types.KeyboardButton("Да, посчитай}?")
-    # btn2 = types.KeyboardButton("Нет, я сам посчитаю?")
-    # markup.add(btn1, btn2)
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Чтобы попробовать, жми /keys")
 
