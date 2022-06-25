@@ -168,7 +168,7 @@ def commands_list(update,context):  # Список всех доступных �
 
 
 
-start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
+start_handler = CommandHandler('start', start) 
 dispatcher.add_handler(start_handler)  
 
 start_handler = CommandHandler('frommix', mix_frac_conv)
