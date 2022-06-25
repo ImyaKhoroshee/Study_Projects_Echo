@@ -30,11 +30,12 @@ def RC_calculator():
         result_parts = []
         result_parts.append(equation[0]+image_parts[0])
         result_parts.append(image_parts[1])
+        # print(f'after result_parts append\n {result_parts}')
         result_parts = list(map(calc_mod,result_parts))
-        # print(f'after calc_mod {result_parts}')
+        # print(f'after calc_mod\n{result_parts}')
 
         result_parts = list(map(MixFractionOut,result_parts))
-        # print(f'after MixFractionOut {result_parts}')
+        # print(f'after MixFractionOut\n{result_parts}')
         if result_parts[1] != '':
             if result_parts[1] != '-':
                 result_parts[1] =result_parts[1]+'i'
