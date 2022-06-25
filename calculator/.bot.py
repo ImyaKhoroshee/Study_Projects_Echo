@@ -35,7 +35,7 @@ def start(update, context):     # Приветствие
 
 
 
-def run_main(update,context):
+def run_main(update,context): #/calc , прогоняет весь калькулятор, без консольных модулей.
     from conversion_modul import conversion_of_mixed_fractions as MixFractionIn
     from comput_modul import calc_mod
     from return_conversion import conversion_to_mixed_fraction as MixFractionOut
@@ -78,7 +78,7 @@ def conv_to_mix_frac(update, context): # для команды /tomix. Прим�
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=conversion_to_mixed_fraction(ab))
 
-def input_tele_check(update, context):
+def input_tele_check(update, context): #/checkme проверка валидности выражения, запускает /calc по кнопке при валидности
     # print(update)
     from validcheck import InputValidityTelebot as tele_check
     update.message.text = update.message.text[9:]
@@ -100,7 +100,7 @@ def input_tele_check(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=f"{checked_input[1]}, код ошибки {checked_input[0]}")
 
-def buttons_list(update: Update, context: CallbackContext):
+def buttons_list(update: Update, context: CallbackContext): #обработка инф-и с нажатых Inlaid кнопок
     q_update = update.callback_query
     # print(q_update)
     query_txt = q_update.data
@@ -120,7 +120,7 @@ def buttons_list(update: Update, context: CallbackContext):
 
 
 
-def commands_list(update,context):  # Список всех доступных команд  дорабатывает Сергей. 
+def commands_list(update,context):  # Список всех доступных команд 
     context.bot.send_message(chat_id=update.effective_chat.id,
     text = ("Доступные математические символы:\n"
             "------------------------------------------------------------------------\n"
