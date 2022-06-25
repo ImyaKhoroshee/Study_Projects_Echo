@@ -53,7 +53,10 @@ def run_main(update,context): #/calc , прогоняет весь кальку�
     result_parts = list(map(calc_mod,result_parts))
     result_parts = list(map(MixFractionOut,result_parts))
     if result_parts[1] != '':
-        result_parts[1] ='+'+result_parts[1]+'i'
+        if result_parts[1] != '-':
+            result_parts[1] =result_parts[1]+'i'
+        else:
+            result_parts[1] ='+'+result_parts[1]+'i'
     answer = result_parts[0]+result_parts[1]
     write_log(start_eq,answer)
     context.bot.send_message(chat_id=update.message.chat_id, 
@@ -92,7 +95,9 @@ def input_tele_check(update, context): #/checkme проверка валидно
     choices_markup = InlineKeyboardMarkup(choices)
 
     if checked_input == 0:
-        update.message.reply_text("Вы хотите посчитать это выражение?",reply_markup=choices_markup)
+        context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text=f"Выражение валидно!")
+        update.message.reply_text("Вы хотите посчитать его?",reply_markup=choices_markup)
         # context.bot.editMessageText(chat_id=update.message.chat_id, #такая запись просто автоматом считает, без выбора по кнопке
         #                         message_id=update.message.message_id, 
         #                         text=run_main(update,context))
@@ -111,7 +116,7 @@ def buttons_list(update: Update, context: CallbackContext): #обработка 
             run_main(q_update,context)
             context.bot.editMessageText(chat_id=q_update.message.chat_id,
                                 message_id=q_update.message.message_id, 
-                                text="Без проблем")
+                                text='Без проблем')
         elif query_txt[1] == '2':
             context.bot.editMessageText(chat_id=update.callback_query.message.chat_id,
                                 message_id=update.callback_query.message.message_id, 

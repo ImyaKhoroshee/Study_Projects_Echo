@@ -47,8 +47,7 @@ def RC_calculator():
         print(colorama.Style.RESET_ALL)
 
 
-
-
-
-
 RC_calculator()
+
+
+
