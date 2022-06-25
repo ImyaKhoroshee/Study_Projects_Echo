@@ -1,9 +1,5 @@
-# ставим модуль python-telegram-bot
-# python -m pip install -U python-telegram-bot
-# Ссылка на чат с нашим ботом t.me/Our_Calculator_Bot. 
 
 import os
-import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler # обработчик CommandHandler (фильтрует сообщения с командами)
 
@@ -33,7 +29,9 @@ dispatcher = updater.dispatcher
 
 def start(update, context):     # Приветствие
     context.bot.send_message(chat_id=update.effective_chat.id, 
-                             text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Чтобы попробовать, жми /keys")
+                             text="Привет, я Бот-калькулятор. Я умею вычислять"
+                                "выражения с рациональными и комплексными числами."
+                                "cправка по команде /help")
 
 
 
