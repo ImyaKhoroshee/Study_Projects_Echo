@@ -53,7 +53,7 @@ def run_main(update,context): #/calc , прогоняет весь кальку�
     result_parts = list(map(calc_mod,result_parts))
     result_parts = list(map(MixFractionOut,result_parts))
     if result_parts[1] != '':
-        if result_parts[1] != '-':
+        if result_parts[1][0] == '-':
             result_parts[1] =result_parts[1]+'i'
         else:
             result_parts[1] ='+'+result_parts[1]+'i'

@@ -36,16 +36,19 @@ def RC_calculator():
 
         result_parts = list(map(MixFractionOut,result_parts))
         # print(f'after MixFractionOut\n{result_parts}')
-        if result_parts[1] != '':
-            if result_parts[1] != '-':
-                result_parts[1] =result_parts[1]+'i'
-            else:
-                result_parts[1] ='+'+result_parts[1]+'i'
-        answer = result_parts[0]+result_parts[1]
+        
+        answer = join_results(result_parts)
         write_log(start_eq,answer)
         print(colorama.Fore.MAGENTA,f'Ответ:\n {answer}')
         print(colorama.Style.RESET_ALL)
 
+def join_results(results):
+    if results[1] != '':
+            if results[1][0] == '-':
+                results[1] =results[1]+'i'
+            else:
+                results[1] ='+'+results[1]+'i'
+    return results[0]+results[1]
 
 RC_calculator()
 
