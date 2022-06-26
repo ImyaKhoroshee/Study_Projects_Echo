@@ -1,9 +1,5 @@
-# ставим модуль python-telegram-bot
-# python -m pip install -U python-telegram-bot
-# Ссылка на чат с нашим ботом t.me/Our_Calculator_Bot. 
 
 import os
-import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler # обработчик CommandHandler (фильтрует сообщения с командами)
 
@@ -33,11 +29,13 @@ dispatcher = updater.dispatcher
 
 def start(update, context):     # Приветствие
     context.bot.send_message(chat_id=update.effective_chat.id, 
-                             text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Чтобы попробовать, жми /keys")
+                             text="Привет, я Бот-калькулятор. Я умею вычислять"
+                                "выражения с рациональными и комплексными числами."
+                                "cправка по команде /help")
 
 
 
-def run_main(update,context):
+def run_main(update,context): #/calc , прогоняет весь калькулятор, без консольных модулей.
     from conversion_modul import conversion_of_mixed_fractions as MixFractionIn
     from comput_modul import calc_mod
     from return_conversion import conversion_to_mixed_fraction as MixFractionOut
@@ -55,7 +53,10 @@ def run_main(update,context):
     result_parts = list(map(calc_mod,result_parts))
     result_parts = list(map(MixFractionOut,result_parts))
     if result_parts[1] != '':
-        result_parts[1] ='+'+result_parts[1]+'i'
+        if result_parts[1][0] == '-':
+            result_parts[1] =result_parts[1]+'i'
+        else:
+            result_parts[1] ='+'+result_parts[1]+'i'
     answer = result_parts[0]+result_parts[1]
     write_log(start_eq,answer)
     context.bot.send_message(chat_id=update.message.chat_id, 
@@ -80,7 +81,7 @@ def conv_to_mix_frac(update, context): # для команды /tomix. Прим�
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=conversion_to_mixed_fraction(ab))
 
-def input_tele_check(update, context):
+def input_tele_check(update, context): #/checkme проверка валидности выражения, запускает /calc по кнопке при валидности
     # print(update)
     from validcheck import InputValidityTelebot as tele_check
     update.message.text = update.message.text[9:]
@@ -94,7 +95,9 @@ def input_tele_check(update, context):
     choices_markup = InlineKeyboardMarkup(choices)
 
     if checked_input == 0:
-        update.message.reply_text("Вы хотите посчитать это выражение?",reply_markup=choices_markup)
+        context.bot.send_message(chat_id=update.effective_chat.id, 
+                             text=f"Выражение валидно!")
+        update.message.reply_text("Вы хотите посчитать его?",reply_markup=choices_markup)
         # context.bot.editMessageText(chat_id=update.message.chat_id, #такая запись просто автоматом считает, без выбора по кнопке
         #                         message_id=update.message.message_id, 
         #                         text=run_main(update,context))
@@ -102,7 +105,7 @@ def input_tele_check(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=f"{checked_input[1]}, код ошибки {checked_input[0]}")
 
-def buttons_list(update: Update, context: CallbackContext):
+def buttons_list(update: Update, context: CallbackContext): #обработка инф-и с нажатых Inlaid кнопок
     q_update = update.callback_query
     # print(q_update)
     query_txt = q_update.data
@@ -113,33 +116,70 @@ def buttons_list(update: Update, context: CallbackContext):
             run_main(q_update,context)
             context.bot.editMessageText(chat_id=q_update.message.chat_id,
                                 message_id=q_update.message.message_id, 
-                                text="Без проблем")
+                                text='Без проблем')
         elif query_txt[1] == '2':
             context.bot.editMessageText(chat_id=update.callback_query.message.chat_id,
                                 message_id=update.callback_query.message.message_id, 
                                 text="Понял, дальше вы сами")
     update.callback_query.answer()
 
+
+
+def commands_list(update,context):  # Список всех доступных команд 
+    context.bot.send_message(chat_id=update.effective_chat.id,
+    text = ("Доступные математические символы:\n"
+            "------------------------------------------------------------------------\n"
+            "'+' сложение                                  '1+2'\n"
+            "'-' вычитание                                 '1-2'\n"
+            "'*' умножение                                '1*2'\n"
+            "':' деление                                      '1:2'\n"
+            "'^' возведение в степень           '3^2'\n"
+            "'i' обозначение мнимой части '3i*2i:i'\n"
+            "------------------------------------------------------------------------\n"
+            "Способы записи обыкновенных дробей:\n"
+            "------------------------------------------------------------------------\n"
+            "правильная дробь            '1/2'\n"
+            "неправильная дробь        '5/3'\n"
+            "смешанная дробь             '2_3/4\n"
+            "дробь применяется для вычисления корня\n"
+            "'4^1/2=2' - корень квадратный,\n"
+            "'27^1/3=3' - корень кубический\n"
+            "------------------------------------------------------------------------\n"
+            "Необрабатываемые операции:\n"
+            "------------------------------------------------------------------------\n"
+            "Не поддерживаются любые буквы кроме 'i'\n"
+            "Не поддерживаются скобки '()'\n"
+            "Не поддерживаются минусы внутри смешанных дробей '1_-2/3' или '1_2/-3'\n"
+            "Не поддерживается знак корня.\n"
+            "------------------------------------------------------------------------\n"
+            "Команды:\n"
+            "------------------------------------------------------------------------\n"
+            "/{0} - команда приветствия калькулятора\n"
+            "/{1} - команда вызова справки\n"
+            "/{2} - команда вычисления выражения\n"
+            "'/calc выражение'\n"
+            "/{3} - команда перевода смешанной дроби в неправильную\n"
+            "/{4} - проверка валидности\n"
+            "/{5} - выделение целой части у неправильнай дроби '9/5 = 1_4/5'\n"
+            .format('start', 
+                    'help', 
+                    'calc', 
+                    'frommix', 
+                    'checkme', 
+                    'tomix')))
+
+
+
 updater.dispatcher.add_handler(CallbackQueryHandler(buttons_list))
 
-# def commands_list(update,context):  # Список всех доступных команд  дорабатывает Сергей. 
-#     context.bot.send_message(chat_id=update.effective_chat.id,
-#     text = ("/{0} - команда перевода смешанной дроби в неправильную \n "
-#     " "
-#     " "
-#     "/{1} - blabla ".format('frommix','tomix')))
-
-
-
-
-start_handler = CommandHandler('start', start) # если увидишь команду `/start`, то вызови функцию `start()`
+start_handler = CommandHandler('start', start) 
 dispatcher.add_handler(start_handler)  
 
 start_handler = CommandHandler('frommix', mix_frac_conv)
 dispatcher.add_handler(start_handler) 
 
-# start_handler = CommandHandler('help', commands_list)
-# dispatcher.add_handler(start_handler)
+start_handler = CommandHandler('help', commands_list)
+dispatcher.add_handler(start_handler)
 
 start_handler = CommandHandler('calc', run_main)
 dispatcher.add_handler(start_handler)
