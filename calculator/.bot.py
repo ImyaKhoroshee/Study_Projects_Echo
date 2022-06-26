@@ -8,17 +8,17 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, CallbackQueryHandler # обработчик CommandHandler (фильтрует сообщения с командами)
 
 # Путь к токену у Тани
-# f = open('.telegram\config.txt', 'r', encoding='utf_8')
-# # f = open('config.txt', 'r', encoding='utf_8')   
-# token_calc = f.read()
-# f.close()
+f = open('.telegram\config.txt', 'r', encoding='utf_8')
+# f = open('config.txt', 'r', encoding='utf_8')   
+token_calc = f.read()
+f.close()
 
 # Путь к токену у Антона
-f = open(os.path.dirname(__file__)+'\config.txt','r',encoding='utf-8')
-all_config = f.read()
-f.close()
-sep_config = all_config.split('\n')
-token_calc = sep_config[1]
+# f = open(os.path.dirname(__file__)+'\config.txt','r',encoding='utf-8')
+# all_config = f.read()
+# f.close()
+# sep_config = all_config.split('\n')
+# token_calc = sep_config[1]
 
 TOKEN = token_calc
 updater = Updater(token=TOKEN)
@@ -33,7 +33,7 @@ dispatcher = updater.dispatcher
 
 def start(update, context):     # Приветствие
     context.bot.send_message(chat_id=update.effective_chat.id, 
-                             text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами. Чтобы попробовать, жми /keys")
+                             text="Привет, я Бот-калькулятор. Я умею вычислять выражения с рациональными и комплексными числами.")
 
 
 
