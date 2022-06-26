@@ -129,7 +129,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#private config
+#local config
 config.txt
-
+.vscode
 use_logs.txt
