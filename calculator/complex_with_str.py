@@ -12,7 +12,7 @@ def counting_ipowerdigits(pow_string:str,found_index:int): #подфункция
         if let.isdigit():
             i_pow_num +=let
         else: break
-    print(f'i_pow_num is {i_pow_num}')
+    # print(f'i_pow_num is {i_pow_num}')
     if pow_negative ==True: return -1*int(i_pow_num)
     else: return int(i_pow_num)
 
@@ -100,6 +100,9 @@ def Complex_i_logic(inp_str:str):
     real_parts_str = real_parts_str.replace('+-','-')
     img_parts_str = '+'.join(img_parts)
     img_parts_str = img_parts_str.replace('+-','-')
+    if real_parts_str != '':
+        if real_parts_str[0] not in {'+','-'}:
+            real_parts_str ='+'+real_parts_str
     return real_parts_str,img_parts_str
 
 # part1 = '-10i*2:3:2*i^2'
