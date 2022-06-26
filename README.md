@@ -13,7 +13,7 @@
 - **Python 3.10** и выше
 - библиотеки c **pypi** :
     1) При запуске в консоли:
-        - **colorama-0.4.5**
+        - **colorama==0.4.5**
 
         *pip install colorama*
         - **prettytable==3.3.0** 
