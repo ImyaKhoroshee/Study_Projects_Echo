@@ -21,11 +21,13 @@ def separator(input_string):
             clean2.append(x)
 
     clean = ''.join(clean)
-    if clean[0] == '+':
-        clean = ''.join([clean[i] for i in range(len(clean)) if i != 0])      
+    if clean != '':
+        if clean[0] == '+':
+            clean = ''.join([clean[i] for i in range(len(clean)) if i != 0])      
     clean2 = ''.join(clean2)
-    if clean2[0] == '+':
-        clean2 = ''.join([clean2[i] for i in range(len(clean2)) if i != 0]) 
+    if clean2 != '':
+        if clean2[0] == '+':
+            clean2 = ''.join([clean2[i] for i in range(len(clean2)) if i != 0]) 
 
     return clean2, clean
 
@@ -50,7 +52,9 @@ def separator(input_string):
 #             real+=x
 #         else:
 #             img+=x
-#     if real[0]=='+': real = real[1:]
-#     if img[0]=='+': img = img[1:]
+#     if real !="":
+#         if real[0]=='+': real = real[1:]
+#     if img !="":
+#         if img[0]=='+': img = img[1:]
 #     return real,img
 
